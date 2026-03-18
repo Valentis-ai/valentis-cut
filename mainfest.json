@@ -1,0 +1,47 @@
+{
+  "name": "VALENTIS Cut - Professional Video Editor",
+  "short_name": "VALENTIS Cut",
+  "description": "Free professional video editor for Android, iOS, Windows, Mac. No installation required.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#0f172a",
+  "orientation": "any",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%233b82f6' rx='40' width='192' height='192'/%3E%3Ctext y='50%25' x='50%25' text-anchor='middle' dominant-baseline='central' font-size='100' fill='white'%3E✂️%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%233b82f6' rx='100' width='512' height='512'/%3E%3Ctext y='50%25' x='50%25' text-anchor='middle' dominant-baseline='central' font-size='280' fill='white'%3E✂️%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["video", "photo", "productivity"],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720'%3E%3Crect fill='%230f172a' width='1280' height='720'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' fill='%233b82f6' font-size='60' font-family='Arial'%3EVALENTIS Cut%3C/text%3E%3C/svg%3E",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Project",
+      "short_name": "New",
+      "description": "Start a new video project",
+      "url": "/?action=new",
+      "icons": [{ "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect fill='%233b82f6' rx='20' width='96' height='96'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dominant-baseline='central' font-size='50' fill='white'%3E%2B%3C/text%3E%3C/svg%3E", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
