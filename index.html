@@ -1,30 +1,31 @@
-
-# کد کامل index.html با ادیتور واقعی
-html_code = '''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
+
     <title>VALENTIS Cut | Free Professional Video Editor</title>
     <meta name="description" content="VALENTIS Cut - The most advanced free video editor. Works on all devices.">
     <meta name="theme-color" content="#0f172a">
-    
+
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    
+
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- FFmpeg for video processing -->
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.7/dist/umd/ffmpeg.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
-    
+
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -38,49 +39,63 @@ html_code = '''<!DOCTYPE html>
             }
         }
     </script>
-    
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', system-ui, sans-serif; background: #020617; color: #f8fafc; overflow-x: hidden; }
-        
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 4px; }
-        
+
         .glass { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .glass-strong { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .gradient-text { background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        
+
         /* Editor Styles */
         .editor-container { display: none; position: fixed; inset: 0; z-index: 100; background: #0f172a; }
         .editor-container.active { display: flex; flex-direction: column; }
-        
+
         .timeline-track { position: relative; height: 60px; background: #1e293b; border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
         .timeline-clip { position: absolute; height: 100%; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 6px; cursor: move; display: flex; align-items: center; padding: 0 12px; font-size: 12px; font-weight: 500; min-width: 80px; border: 2px solid transparent; transition: all 0.2s; }
         .timeline-clip:hover { border-color: #60a5fa; }
         .timeline-clip.selected { border-color: #f472b6; box-shadow: 0 0 20px rgba(244, 114, 182, 0.3); }
-        
+
         .playhead { position: absolute; top: 0; bottom: 0; width: 2px; background: #f472b6; pointer-events: none; z-index: 50; box-shadow: 0 0 10px rgba(244, 114, 182, 0.5); }
-        
+
         .tool-btn { transition: all 0.2s; }
         .tool-btn:hover { background: rgba(59, 130, 246, 0.2); }
         .tool-btn.active { background: #3b82f6; color: white; }
-        
+
         .video-canvas { max-width: 100%; max-height: 100%; background: #000; }
-        
+
         /* Loading */
         #loader { position: fixed; inset: 0; background: #020617; z-index: 9999; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s; }
         .loader-spinner { width: 60px; height: 60px; border: 4px solid rgba(59, 130, 246, 0.2); border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
+
         /* Watermark */
         .watermark { position: absolute; bottom: 20px; right: 20px; font-size: 24px; color: rgba(255,255,255,0.3); pointer-events: none; font-weight: bold; }
-        
+
         /* Range slider */
         input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 3px; background: #334155; outline: none; }
         input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #3b82f6; cursor: pointer; }
+
+        /* Ad Modal */
+        .ad-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 400; display: none; align-items: center; justify-content: center; }
+        .ad-modal.active { display: flex; }
+        .ad-container { background: #1e293b; border-radius: 16px; padding: 24px; max-width: 500px; width: 90%; text-align: center; }
+        .ad-timer { font-size: 48px; font-weight: bold; color: #3b82f6; margin: 20px 0; }
+
+        /* Admin Badge */
+        .admin-badge { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: bold; margin-left: 8px; }
+
+        /* Login Modal */
+        .login-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 500; display: none; align-items: center; justify-content: center; }
+        .login-modal.active { display: flex; }
     </style>
+<base target="_blank">
 </head>
 <body class="bg-dark-950">
 
@@ -103,6 +118,7 @@ html_code = '''<!DOCTYPE html>
                         <i class="fas fa-cut text-white text-lg"></i>
                     </div>
                     <span class="text-xl font-bold gradient-text">VALENTIS Cut</span>
+                    <span id="userBadge" class="hidden"></span>
                 </div>
 
                 <div class="hidden md:flex items-center gap-8">
@@ -113,6 +129,12 @@ html_code = '''<!DOCTYPE html>
                 </div>
 
                 <div class="flex items-center gap-4">
+                    <button id="loginBtn" onclick="showLoginModal()" class="px-4 py-2 text-gray-300 hover:text-white transition-colors text-sm">
+                        <i class="fas fa-user mr-2"></i>Login
+                    </button>
+                    <button id="logoutBtn" onclick="logout()" class="hidden px-4 py-2 text-gray-300 hover:text-white transition-colors text-sm">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
                     <button onclick="openEditor()" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-medium text-sm hover:shadow-lg hover:shadow-blue-500/30 transition-all transform hover:scale-105">
                         <i class="fas fa-play mr-2"></i>Start Editing
                     </button>
@@ -124,7 +146,7 @@ html_code = '''<!DOCTYPE html>
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
         <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20"></div>
-        
+
         <div class="relative z-10 max-w-7xl mx-auto px-4 text-center">
             <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8">
                 <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
@@ -209,7 +231,7 @@ html_code = '''<!DOCTYPE html>
                         <i class="fas fa-file-export text-2xl text-white"></i>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-3">Export 1080p</h3>
-                    <p class="text-gray-400">Export in Full HD quality. 4K available in Pro version.</p>
+                    <p class="text-gray-400">Watch one ad to export in Full HD quality completely free!</p>
                 </div>
 
                 <div class="glass rounded-2xl p-8 hover:bg-white/5 transition-all cursor-pointer" onclick="openEditor()">
@@ -239,7 +261,8 @@ html_code = '''<!DOCTYPE html>
                 <p class="text-gray-400 text-lg">Start free, upgrade when you need more</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Free Plan -->
                 <div class="glass rounded-3xl p-8 border border-gray-800">
                     <div class="text-center mb-8">
                         <h3 class="text-2xl font-bold text-white mb-2">Free</h3>
@@ -253,7 +276,7 @@ html_code = '''<!DOCTYPE html>
                         </li>
                         <li class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-check text-green-400"></i>
-                            <span>1080p export</span>
+                            <span>720p export</span>
                         </li>
                         <li class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-check text-green-400"></i>
@@ -269,6 +292,40 @@ html_code = '''<!DOCTYPE html>
                     </button>
                 </div>
 
+                <!-- Ad-Supported 1080p Plan -->
+                <div class="glass rounded-3xl p-8 border-2 border-yellow-500 relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-sm font-bold rounded-full">
+                        WATCH AD = FREE 1080p
+                    </div>
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold text-white mb-2">Free HD</h3>
+                        <div class="text-4xl font-bold text-yellow-400 mb-2">FREE</div>
+                        <p class="text-gray-400 text-sm">Watch 1 ad per export</p>
+                    </div>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-yellow-400"></i>
+                            <span>Everything in Free</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-yellow-400"></i>
+                            <span class="font-bold text-yellow-400">1080p Full HD Export</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-check text-yellow-400"></i>
+                            <span>No watermark (after ad)</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-gray-300">
+                            <i class="fas fa-ad text-yellow-400"></i>
+                            <span>Watch 15-30 sec ad</span>
+                        </li>
+                    </ul>
+                    <button onclick="openEditor()" class="w-full py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl font-medium hover:shadow-lg transition-all">
+                        <i class="fas fa-play-circle mr-2"></i>Start with Ads
+                    </button>
+                </div>
+
+                <!-- Pro Plan -->
                 <div class="glass rounded-3xl p-8 border-2 border-blue-500 relative transform scale-105">
                     <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-bold rounded-full">
                         MOST POPULAR
@@ -281,15 +338,15 @@ html_code = '''<!DOCTYPE html>
                     <ul class="space-y-4 mb-8">
                         <li class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-check text-blue-400"></i>
-                            <span>Everything in Free</span>
+                            <span>Everything in Free HD</span>
                         </li>
                         <li class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-check text-blue-400"></i>
-                            <span>4K export</span>
+                            <span>4K Ultra HD export</span>
                         </li>
                         <li class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-check text-blue-400"></i>
-                            <span>No watermark</span>
+                            <span>No ads, no watermark</span>
                         </li>
                         <li class="flex items-center gap-3 text-gray-300">
                             <i class="fas fa-check text-blue-400"></i>
@@ -320,8 +377,9 @@ html_code = '''<!DOCTYPE html>
                     <i class="fas fa-cut text-white text-sm"></i>
                 </div>
                 <span class="font-semibold text-white">VALENTIS Cut Editor</span>
+                <span id="editorUserBadge" class="hidden"></span>
             </div>
-            
+
             <div class="flex items-center gap-2">
                 <button onclick="undo()" class="w-8 h-8 rounded-lg hover:bg-gray-800 flex items-center justify-center text-gray-400" title="Undo">
                     <i class="fas fa-undo"></i>
@@ -361,7 +419,7 @@ html_code = '''<!DOCTYPE html>
                         <span>Split</span>
                     </button>
                 </div>
-                
+
                 <div class="p-4 border-t border-gray-800">
                     <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Effects</h3>
                     <div class="space-y-2">
@@ -396,7 +454,7 @@ html_code = '''<!DOCTYPE html>
                         </button>
                         <input type="file" id="videoInput" accept="video/*" class="hidden" onchange="handleVideoUpload(event)">
                     </div>
-                    
+
                     <video id="previewVideo" class="video-canvas hidden" controls></video>
                     <canvas id="videoCanvas" class="video-canvas hidden"></canvas>
                     <div id="watermark" class="watermark hidden">VALENTIS Cut</div>
@@ -407,7 +465,7 @@ html_code = '''<!DOCTYPE html>
                     <button onclick="togglePlay()" id="playBtn" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-500 transition-all">
                         <i class="fas fa-play" id="playIcon"></i>
                     </button>
-                    
+
                     <div class="flex-1">
                         <div class="flex items-center justify-between text-sm text-gray-400 mb-1">
                             <span id="currentTime">00:00</span>
@@ -423,37 +481,44 @@ html_code = '''<!DOCTYPE html>
                 <div class="p-4 border-b border-gray-800">
                     <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider">Properties</h3>
                 </div>
-                
+
                 <div class="p-4 space-y-6">
                     <div>
                         <label class="text-sm text-gray-400 mb-2 block">Brightness</label>
                         <input type="range" min="-100" max="100" value="0" oninput="adjustProperty('brightness', this.value)">
                     </div>
-                    
+
                     <div>
                         <label class="text-sm text-gray-400 mb-2 block">Contrast</label>
                         <input type="range" min="-100" max="100" value="0" oninput="adjustProperty('contrast', this.value)">
                     </div>
-                    
+
                     <div>
                         <label class="text-sm text-gray-400 mb-2 block">Saturation</label>
                         <input type="range" min="-100" max="100" value="0" oninput="adjustProperty('saturation', this.value)">
                     </div>
-                    
+
                     <div>
                         <label class="text-sm text-gray-400 mb-2 block">Speed</label>
                         <input type="range" min="25" max="400" value="100" oninput="adjustSpeed(this.value)">
                         <span id="speedValue" class="text-sm text-gray-500">1.0x</span>
                     </div>
                 </div>
-                
+
                 <!-- Ad Space -->
                 <div class="mt-auto p-4 border-t border-gray-800">
                     <div class="bg-gray-800 rounded-xl p-4 text-center">
                         <p class="text-xs text-gray-500 mb-2">Advertisement</p>
-                        <div class="h-24 bg-gray-700 rounded-lg flex items-center justify-center text-gray-500">
-                            Google AdSense
-                        </div>
+                        <!-- Google AdSense Ad Unit -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                             data-ad-slot="XXXXXXXXXX"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
                     </div>
                 </div>
             </div>
@@ -467,18 +532,18 @@ html_code = '''<!DOCTYPE html>
                 <button onclick="zoomTimeline(0.1)" class="hover:text-white"><i class="fas fa-search-plus"></i></button>
                 <button onclick="zoomTimeline(-0.1)" class="hover:text-white"><i class="fas fa-search-minus"></i></button>
             </div>
-            
+
             <div class="flex-1 p-4 overflow-x-auto" id="timelineContainer">
                 <!-- Video Track -->
                 <div class="timeline-track" id="videoTrack">
                     <div class="playhead" id="playhead" style="left: 0%"></div>
                 </div>
-                
+
                 <!-- Audio Track -->
                 <div class="timeline-track" id="audioTrack">
                     <div class="text-gray-500 text-xs p-2">Audio Track</div>
                 </div>
-                
+
                 <!-- Text Track -->
                 <div class="timeline-track" id="textTrack">
                     <div class="text-gray-500 text-xs p-2">Text Overlay</div>
@@ -487,31 +552,72 @@ html_code = '''<!DOCTYPE html>
         </div>
     </div>
 
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="glass-strong rounded-2xl p-8 max-w-md w-full mx-4">
+            <h3 class="text-2xl font-bold text-white mb-6 text-center">Login to VALENTIS Cut</h3>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Username</label>
+                    <input type="text" id="loginUsername" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none" placeholder="Enter username">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Password</label>
+                    <input type="password" id="loginPassword" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-blue-500 focus:outline-none" placeholder="Enter password">
+                </div>
+                <button onclick="performLogin()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg transition-all">
+                    Login
+                </button>
+            </div>
+
+            <div class="mt-6 text-center">
+                <p class="text-gray-500 text-sm">Admin accounts (Full Pro Access):</p>
+                <p class="text-gray-600 text-xs mt-1">valentis-admin / valentis2024</p>
+            </div>
+
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg hover:bg-gray-800 flex items-center justify-center text-gray-400">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Export Modal -->
     <div id="exportModal" class="fixed inset-0 bg-black/80 z-[200] hidden items-center justify-center">
         <div class="glass-strong rounded-2xl p-8 max-w-md w-full mx-4">
             <h3 class="text-2xl font-bold text-white mb-4">Export Video</h3>
-            
+
             <div class="space-y-4 mb-6">
-                <div class="p-4 border border-gray-700 rounded-xl cursor-pointer hover:border-blue-500 transition-all" onclick="exportVideo('720p')">
+                <div class="p-4 border border-gray-700 rounded-xl cursor-pointer hover:border-blue-500 transition-all" onclick="selectExportQuality('720p')">
                     <div class="flex items-center justify-between">
                         <div>
                             <h4 class="font-semibold text-white">720p HD</h4>
                             <p class="text-sm text-gray-400">Free - with watermark</p>
                         </div>
-                        <i class="fas fa-check-circle text-blue-500"></i>
+                        <input type="radio" name="exportQuality" value="720p" class="w-5 h-5 text-blue-500" checked>
                     </div>
                 </div>
-                
-                <div class="p-4 border border-gray-700 rounded-xl cursor-pointer hover:border-blue-500 transition-all" onclick="exportVideo('1080p')">
+
+                <div id="option1080Free" class="p-4 border border-yellow-600 rounded-xl cursor-pointer hover:border-yellow-500 transition-all" onclick="selectExportQuality('1080p-ad')">
                     <div class="flex items-center justify-between">
                         <div>
                             <h4 class="font-semibold text-white">1080p Full HD</h4>
-                            <p class="text-sm text-gray-400">Free - with watermark</p>
+                            <p class="text-sm text-yellow-400"><i class="fas fa-ad mr-1"></i>Watch 1 ad to export FREE</p>
                         </div>
+                        <input type="radio" name="exportQuality" value="1080p-ad" class="w-5 h-5 text-yellow-500">
                     </div>
                 </div>
-                
+
+                <div id="option1080Pro" class="hidden p-4 border border-blue-600 rounded-xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-semibold text-white">1080p Full HD</h4>
+                            <p class="text-sm text-blue-400"><i class="fas fa-crown mr-1"></i>Pro - No ads, no watermark</p>
+                        </div>
+                        <span class="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded-full">PRO</span>
+                    </div>
+                </div>
+
                 <div class="p-4 border border-gray-700 rounded-xl cursor-pointer hover:border-purple-500 transition-all opacity-75" onclick="upgradeToPro()">
                     <div class="flex items-center justify-between">
                         <div>
@@ -522,7 +628,7 @@ html_code = '''<!DOCTYPE html>
                     </div>
                 </div>
             </div>
-            
+
             <div class="flex gap-3">
                 <button onclick="closeExportModal()" class="flex-1 py-3 border border-gray-600 text-gray-400 rounded-xl hover:bg-gray-800 transition-all">
                     Cancel
@@ -531,6 +637,38 @@ html_code = '''<!DOCTYPE html>
                     Export
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Ad Watching Modal -->
+    <div id="adModal" class="ad-modal">
+        <div class="ad-container">
+            <h3 class="text-xl font-bold text-white mb-4">Watch Ad to Unlock 1080p Export</h3>
+            <p class="text-gray-400 mb-4">Watch this short ad to export your video in Full HD quality without watermark!</p>
+
+            <!-- Video Ad Container -->
+            <div class="bg-black rounded-xl overflow-hidden mb-4" style="aspect-ratio: 16/9;">
+                <video id="adVideo" class="w-full h-full" controls>
+                    <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- Google AdSense Display Ad -->
+            <div class="mb-4">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="XXXXXXXXXX"
+                     data-ad-format="video"
+                     data-full-width-responsive="true"></ins>
+            </div>
+
+            <div class="ad-timer" id="adTimer">15</div>
+            <p class="text-gray-500 text-sm">seconds remaining</p>
+
+            <button id="skipAdBtn" onclick="skipAd()" class="mt-4 px-6 py-2 bg-gray-700 text-gray-400 rounded-lg font-medium cursor-not-allowed" disabled>
+                Skip Ad (<span id="skipCountdown">15</span>)
+            </button>
         </div>
     </div>
 
@@ -547,6 +685,18 @@ html_code = '''<!DOCTYPE html>
     </div>
 
     <script>
+
+        // ==================== ADMIN ACCOUNTS ====================
+        // 5 Admin accounts with full Pro access (Free)
+        const ADMIN_ACCOUNTS = [
+            { username: 'valentis-admin', password: 'valentis2024', name: 'Valentis Admin' },
+            { username: 'admin1', password: 'Admin@2024!', name: 'Admin One' },
+            { username: 'admin2', password: 'Admin@2024!', name: 'Admin Two' },
+            { username: 'admin3', password: 'Admin@2024!', name: 'Admin Three' },
+            { username: 'admin4', password: 'Admin@2024!', name: 'Admin Four' },
+            { username: 'admin5', password: 'Admin@2024!', name: 'Admin Five' }
+        ];
+
         // Global Variables
         let ffmpeg = null;
         let videoElement = null;
@@ -559,47 +709,362 @@ html_code = '''<!DOCTYPE html>
         let clips = [];
         let currentTime = 0;
         let duration = 0;
-        let isPro = false; // Set to true if user has Pro
-        
-        // Initialize FFmpeg
+        let isPro = false;
+        let isAdmin = false;
+        let currentUser = null;
+        let selectedExportQuality = '720p';
+        let hasWatchedAd = false;
+        let adTimer = null;
+
+        // ==================== AUTHENTICATION ====================
+
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function performLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (!username || !password) {
+                alert('Please enter both username and password');
+                return;
+            }
+
+            // Check admin accounts
+            const admin = ADMIN_ACCOUNTS.find(a => a.username === username && a.password === password);
+
+            if (admin) {
+                // Admin login successful
+                isAdmin = true;
+                isPro = true;
+                currentUser = admin;
+
+                // Save to localStorage
+                localStorage.setItem('valentis_user', JSON.stringify({
+                    username: admin.username,
+                    name: admin.name,
+                    isAdmin: true,
+                    isPro: true,
+                    loginTime: Date.now()
+                }));
+
+                updateUIForUser();
+                closeLoginModal();
+                alert('Welcome Admin! You have full Pro access.');
+            } else {
+                // Regular user (no login required for basic use)
+                alert('Invalid credentials. Using free version.');
+            }
+        }
+
+        function logout() {
+            isAdmin = false;
+            isPro = false;
+            currentUser = null;
+            hasWatchedAd = false;
+            localStorage.removeItem('valentis_user');
+            updateUIForUser();
+            alert('Logged out successfully');
+        }
+
+        function checkExistingLogin() {
+            const saved = localStorage.getItem('valentis_user');
+            if (saved) {
+                try {
+                    const user = JSON.parse(saved);
+                    // Check if login is still valid (30 days)
+                    if (Date.now() - user.loginTime < 30 * 24 * 60 * 60 * 1000) {
+                        currentUser = user;
+                        isAdmin = user.isAdmin;
+                        isPro = user.isPro;
+                        updateUIForUser();
+                    } else {
+                        localStorage.removeItem('valentis_user');
+                    }
+                } catch (e) {
+                    localStorage.removeItem('valentis_user');
+                }
+            }
+        }
+
+        function updateUIForUser() {
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const userBadge = document.getElementById('userBadge');
+            const editorUserBadge = document.getElementById('editorUserBadge');
+
+            if (isAdmin && currentUser) {
+                loginBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+
+                const badgeHTML = '<span class="admin-badge">ADMIN</span>';
+                userBadge.innerHTML = badgeHTML;
+                userBadge.classList.remove('hidden');
+                editorUserBadge.innerHTML = badgeHTML;
+                editorUserBadge.classList.remove('hidden');
+
+                // Update export options for admin
+                document.getElementById('option1080Free').classList.add('hidden');
+                document.getElementById('option1080Pro').classList.remove('hidden');
+            } else {
+                loginBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+                userBadge.classList.add('hidden');
+                editorUserBadge.classList.add('hidden');
+            }
+        }
+
+        // ==================== AD SYSTEM ====================
+
+        function showAdModal() {
+            document.getElementById('adModal').classList.add('active');
+            hasWatchedAd = false;
+
+            // Start ad timer
+            let timeLeft = 15;
+            const timerEl = document.getElementById('adTimer');
+            const skipBtn = document.getElementById('skipAdBtn');
+            const skipCountdown = document.getElementById('skipCountdown');
+
+            // Play ad video
+            const adVideo = document.getElementById('adVideo');
+            adVideo.play().catch(e => console.log('Auto-play prevented'));
+
+            adTimer = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = timeLeft;
+                skipCountdown.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(adTimer);
+                    skipBtn.disabled = false;
+                    skipBtn.classList.remove('cursor-not-allowed', 'bg-gray-700', 'text-gray-400');
+                    skipBtn.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-500');
+                    skipBtn.innerHTML = 'Continue to Export <i class="fas fa-arrow-right ml-2"></i>';
+                    hasWatchedAd = true;
+
+                    // Auto close after 3 seconds
+                    setTimeout(() => {
+                        if (document.getElementById('adModal').classList.contains('active')) {
+                            skipAd();
+                        }
+                    }, 3000);
+                }
+            }, 1000);
+        }
+
+        function skipAd() {
+            clearInterval(adTimer);
+            document.getElementById('adModal').classList.remove('active');
+            const adVideo = document.getElementById('adVideo');
+            adVideo.pause();
+            adVideo.currentTime = 0;
+
+            if (hasWatchedAd) {
+                // Proceed with 1080p export
+                proceedWithExport('1080p');
+            }
+        }
+
+        // ==================== EXPORT SYSTEM ====================
+
+        function selectExportQuality(quality) {
+            selectedExportQuality = quality;
+            // Update radio buttons
+            document.querySelectorAll('input[name="exportQuality"]').forEach(radio => {
+                radio.checked = radio.value === quality;
+            });
+        }
+
+        function startExport() {
+            if (selectedExportQuality === '1080p-ad') {
+                // Check if admin (no ad needed)
+                if (isAdmin) {
+                    proceedWithExport('1080p');
+                } else if (hasWatchedAd) {
+                    proceedWithExport('1080p');
+                } else {
+                    closeExportModal();
+                    showAdModal();
+                }
+            } else {
+                proceedWithExport(selectedExportQuality);
+            }
+        }
+
+        async function proceedWithExport(quality) {
+            closeExportModal();
+            document.getElementById('exportLoading').classList.remove('hidden');
+            document.getElementById('exportLoading').classList.add('flex');
+
+            try {
+                if (!ffmpeg) {
+                    fallbackExport(quality);
+                    return;
+                }
+
+                await processWithFFmpeg(quality);
+
+            } catch (error) {
+                console.error('Export failed:', error);
+                fallbackExport(quality);
+            }
+        }
+
+        async function processWithFFmpeg(quality) {
+            const { fetchFile } = FFmpegUtil;
+
+            document.getElementById('exportStatus').textContent = 'Loading video...';
+            document.getElementById('exportProgress').style.width = '20%';
+
+            await ffmpeg.writeFile('input.mp4', await fetchFile(currentVideo));
+
+            document.getElementById('exportStatus').textContent = 'Applying effects...';
+            document.getElementById('exportProgress').style.width = '40%';
+
+            // Build filter string
+            let filters = [];
+            if (videoEffects.brightness !== 0) {
+                filters.push(`eq=brightness=${videoEffects.brightness / 100}`);
+            }
+            if (videoEffects.contrast !== 0) {
+                filters.push(`eq=contrast=${1 + (videoEffects.contrast / 100)}`);
+            }
+            if (videoEffects.saturation !== 0) {
+                filters.push(`eq=saturation=${1 + (videoEffects.saturation / 100)}`);
+            }
+
+            // Determine resolution
+            let resolution = '1280:720';
+            if (quality === '1080p') resolution = '1920:1080';
+            if (quality === '4k') resolution = '3840:2160';
+
+            // Add watermark for free users (not admin, not pro)
+            const shouldAddWatermark = !isAdmin && !isPro && quality === '720p';
+
+            if (shouldAddWatermark) {
+                filters.push("drawtext=text='VALENTIS Cut':fontsize=24:fontcolor=white@0.5:x=w-tw-20:y=h-th-20");
+            }
+
+            document.getElementById('exportStatus').textContent = 'Processing video...';
+            document.getElementById('exportProgress').style.width = '60%';
+
+            // Build FFmpeg command
+            const args = ['-i', 'input.mp4'];
+
+            if (filters.length > 0) {
+                args.push('-vf', filters.join(','));
+            }
+
+            args.push('-s', resolution, '-c:v', 'libx264', '-preset', 'fast', '-crf', '23', '-c:a', 'copy', 'output.mp4');
+
+            await ffmpeg.exec(args);
+
+            document.getElementById('exportStatus').textContent = 'Finalizing...';
+            document.getElementById('exportProgress').style.width = '90%';
+
+            // Read output file
+            const data = await ffmpeg.readFile('output.mp4');
+            const blob = new Blob([data.buffer], { type: 'video/mp4' });
+            const url = URL.createObjectURL(blob);
+
+            // Download
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `edited-video-${quality}-${Date.now()}.mp4`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            document.getElementById('exportProgress').style.width = '100%';
+
+            setTimeout(() => {
+                document.getElementById('exportLoading').classList.add('hidden');
+                document.getElementById('exportLoading').classList.remove('flex');
+                document.getElementById('exportProgress').style.width = '0%';
+
+                // Reset ad watch status after successful export
+                if (!isAdmin) {
+                    hasWatchedAd = false;
+                }
+
+                alert('Video exported successfully!');
+            }, 1000);
+        }
+
+        function fallbackExport(quality) {
+            document.getElementById('exportStatus').textContent = 'Preparing download...';
+            document.getElementById('exportProgress').style.width = '80%';
+
+            setTimeout(() => {
+                const url = videoElement.src;
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `edited-video-${quality}-${Date.now()}.mp4`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                document.getElementById('exportLoading').classList.add('hidden');
+                document.getElementById('exportLoading').classList.remove('flex');
+
+                if (!isAdmin) {
+                    hasWatchedAd = false;
+                }
+
+                alert('Video exported! (Fallback mode - effects may not be applied)');
+            }, 1000);
+        }
+
+
+        // ==================== FFMPEG INITIALIZATION ====================
+
         async function initFFmpeg() {
             try {
                 document.getElementById('ffmpeg-loading').classList.remove('hidden');
-                
+
                 const { FFmpeg } = FFmpegWASM;
                 ffmpeg = new FFmpeg();
-                
+
                 ffmpeg.on('log', ({ message }) => {
                     console.log('FFmpeg:', message);
                 });
-                
+
                 await ffmpeg.load();
-                
+
                 console.log('FFmpeg loaded successfully');
                 document.getElementById('ffmpeg-loading').textContent = 'FFmpeg Ready!';
-                
+
                 setTimeout(() => {
                     document.getElementById('loader').style.opacity = '0';
                     document.getElementById('loader').style.visibility = 'hidden';
                 }, 500);
-                
+
             } catch (error) {
                 console.error('FFmpeg load failed:', error);
-                document.getElementById('ffmpeg-loading').textContent = 'Using fallback mode (no export)';
+                document.getElementById('ffmpeg-loading').textContent = 'Using fallback mode';
                 setTimeout(() => {
                     document.getElementById('loader').style.opacity = '0';
                     document.getElementById('loader').style.visibility = 'hidden';
                 }, 1000);
             }
         }
-        
-        // Initialize on load
+
+        // ==================== EDITOR FUNCTIONS ====================
+
         window.addEventListener('load', () => {
             initFFmpeg();
+            checkExistingLogin();
+
             videoElement = document.getElementById('previewVideo');
             canvasElement = document.getElementById('videoCanvas');
             canvasCtx = canvasElement.getContext('2d');
-            
+
             // Video event listeners
             videoElement.addEventListener('timeupdate', updateTimeline);
             videoElement.addEventListener('loadedmetadata', () => {
@@ -612,47 +1077,49 @@ html_code = '''<!DOCTYPE html>
                 updatePlayButton();
             });
         });
-        
-        // Editor Functions
+
         function openEditor() {
             document.getElementById('videoEditor').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-        
+
         function closeEditor() {
             document.getElementById('videoEditor').classList.remove('active');
             document.body.style.overflow = '';
         }
-        
+
         function handleVideoUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
-            // Check file size (500MB limit for free)
-            const maxSize = isPro ? 2 * 1024 * 1024 * 1024 : 500 * 1024 * 1024;
+
+            // Check file size (500MB limit for free, 2GB for admin/pro)
+            const maxSize = (isPro || isAdmin) ? 2 * 1024 * 1024 * 1024 : 500 * 1024 * 1024;
             if (file.size > maxSize) {
                 alert('File too large! Upgrade to Pro for larger files.');
                 return;
             }
-            
+
             const url = URL.createObjectURL(file);
             currentVideo = file;
-            
+
             videoElement.src = url;
             videoElement.classList.remove('hidden');
             document.getElementById('uploadPrompt').classList.add('hidden');
-            document.getElementById('watermark').classList.remove('hidden');
-            
-            // Setup canvas for effects
+
+            // Show watermark only for free non-admin users
+            if (!isAdmin && !isPro) {
+                document.getElementById('watermark').classList.remove('hidden');
+            }
+
             videoElement.onloadeddata = () => {
                 canvasElement.width = videoElement.videoWidth;
                 canvasElement.height = videoElement.videoHeight;
             };
         }
-        
+
         function togglePlay() {
             if (!videoElement.src) return;
-            
+
             if (isPlaying) {
                 videoElement.pause();
             } else {
@@ -661,36 +1128,37 @@ html_code = '''<!DOCTYPE html>
             isPlaying = !isPlaying;
             updatePlayButton();
         }
-        
+
         function updatePlayButton() {
             const icon = document.getElementById('playIcon');
             icon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
         }
-        
+
         function seekVideo(value) {
             if (!videoElement.duration) return;
             const time = (value / 100) * videoElement.duration;
             videoElement.currentTime = time;
         }
-        
+
         function updateTimeline() {
             if (!videoElement.duration) return;
-            
+
             currentTime = videoElement.currentTime;
             const percent = (currentTime / videoElement.duration) * 100;
-            
+
             document.getElementById('seekBar').value = percent;
             document.getElementById('currentTime').textContent = formatTime(currentTime);
             document.getElementById('playhead').style.left = percent + '%';
         }
-        
+
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
-        
-        // Timeline Functions
+
+        // ==================== TIMELINE FUNCTIONS ====================
+
         function addClipToTimeline() {
             const track = document.getElementById('videoTrack');
             const clip = document.createElement('div');
@@ -699,20 +1167,20 @@ html_code = '''<!DOCTYPE html>
             clip.style.width = '100%';
             clip.innerHTML = `<i class="fas fa-video mr-2"></i>${currentVideo.name || 'Video'}`;
             clip.onclick = () => selectClip(clip);
-            
-            // Remove existing clips
+
             track.querySelectorAll('.timeline-clip').forEach(c => c.remove());
             track.appendChild(clip);
-            
+
             clips = [{ element: clip, start: 0, duration: duration }];
         }
-        
+
         function selectClip(clip) {
             document.querySelectorAll('.timeline-clip').forEach(c => c.classList.remove('selected'));
             clip.classList.add('selected');
         }
-        
-        // Tool Functions
+
+        // ==================== TOOL FUNCTIONS ====================
+
         function setTool(tool) {
             currentTool = tool;
             document.querySelectorAll('.tool-btn').forEach(btn => {
@@ -722,191 +1190,98 @@ html_code = '''<!DOCTYPE html>
             document.getElementById(`tool-${tool}`).classList.add('active');
             document.getElementById(`tool-${tool}`).classList.remove('text-gray-400');
         }
-        
-        // Effects
+
+        // ==================== EFFECTS ====================
+
         function adjustProperty(property, value) {
-            videoEffects[property] = value;
+            videoEffects[property] = parseInt(value);
             applyVideoEffects();
         }
-        
+
         function adjustSpeed(value) {
             if (!videoElement) return;
             const speed = value / 100;
             videoElement.playbackRate = speed;
             document.getElementById('speedValue').textContent = speed.toFixed(1) + 'x';
         }
-        
+
         function applyVideoEffects() {
             if (!videoElement) return;
-            
-            // Apply CSS filters to video
+
             const filters = [];
             if (videoEffects.brightness !== 0) {
-                filters.push(`brightness(${100 + parseInt(videoEffects.brightness)}%)`);
+                filters.push(`brightness(${100 + videoEffects.brightness}%)`);
             }
             if (videoEffects.contrast !== 0) {
-                filters.push(`contrast(${100 + parseInt(videoEffects.contrast)}%)`);
+                filters.push(`contrast(${100 + videoEffects.contrast}%)`);
             }
             if (videoEffects.saturation !== 0) {
-                filters.push(`saturate(${100 + parseInt(videoEffects.saturation)}%)`);
+                filters.push(`saturate(${100 + videoEffects.saturation}%)`);
             }
-            
+
             videoElement.style.filter = filters.join(' ');
         }
-        
+
+        function applyEffect(effect) {
+            console.log('Applying effect:', effect);
+            // This would apply the effect to the selected clip
+        }
+
         function applyProEffect(effect) {
-            if (!isPro) {
+            if (!isPro && !isAdmin) {
                 alert('This feature requires Pro version!');
                 return;
             }
-            // Apply pro effects
+            console.log('Applying pro effect:', effect);
         }
-        
-        // Export Functions
+
+        // ==================== EXPORT UI FUNCTIONS ====================
+
         function showExportModal() {
             if (!currentVideo) {
                 alert('Please upload a video first!');
                 return;
             }
+
+            // Update UI based on user type
+            if (isAdmin) {
+                document.getElementById('option1080Free').classList.add('hidden');
+                document.getElementById('option1080Pro').classList.remove('hidden');
+            } else {
+                document.getElementById('option1080Free').classList.remove('hidden');
+                document.getElementById('option1080Pro').classList.add('hidden');
+            }
+
             document.getElementById('exportModal').classList.remove('hidden');
             document.getElementById('exportModal').classList.add('flex');
         }
-        
+
         function closeExportModal() {
             document.getElementById('exportModal').classList.add('hidden');
             document.getElementById('exportModal').classList.remove('flex');
         }
-        
-        async function exportVideo(quality) {
-            if (quality === '4k' && !isPro) {
-                upgradeToPro();
+
+        function upgradeToPro() {
+            if (isAdmin) {
+                alert('You already have Pro access as an Admin!');
                 return;
             }
-            
-            closeExportModal();
-            document.getElementById('exportLoading').classList.remove('hidden');
-            document.getElementById('exportLoading').classList.add('flex');
-            
-            try {
-                if (!ffmpeg) {
-                    // Fallback: Simple video download
-                    fallbackExport();
-                    return;
-                }
-                
-                // FFmpeg export
-                await processWithFFmpeg(quality);
-                
-            } catch (error) {
-                console.error('Export failed:', error);
-                fallbackExport();
-            }
+            alert('Redirecting to Pro upgrade page...\n\nPayment integration coming soon!');
         }
-        
-        async function processWithFFmpeg(quality) {
-            const { fetchFile } = FFmpegUtil;
-            
-            document.getElementById('exportStatus').textContent = 'Loading video...';
-            document.getElementById('exportProgress').style.width = '20%';
-            
-            // Write file to FFmpeg
-            await ffmpeg.writeFile('input.mp4', await fetchFile(currentVideo));
-            
-            document.getElementById('exportStatus').textContent = 'Processing video...';
-            document.getElementById('exportProgress').style.width = '50%';
-            
-            // Build filter string
-            let filterStr = '';
-            if (videoEffects.brightness !== 0) {
-                filterStr += `eq=brightness=${videoEffects.brightness / 100}:`;
-            }
-            if (videoEffects.contrast !== 0) {
-                filterStr += `contrast=${1 + (videoEffects.contrast / 100)}:`;
-            }
-            if (videoEffects.saturation !== 0) {
-                filterStr += `saturation=${1 + (videoEffects.saturation / 100)}`;
-            }
-            
-            // Determine resolution
-            let resolution = '1280:720';
-            if (quality === '1080p') resolution = '1920:1080';
-            if (quality === '4k') resolution = '3840:2160';
-            
-            // Execute FFmpeg command
-            const args = ['-i', 'input.mp4'];
-            
-            if (filterStr) {
-                args.push('-vf', filterStr);
-            }
-            
-            args.push('-s', resolution, '-c:v', 'libx264', '-preset', 'fast', '-crf', '23');
-            
-            if (!isPro) {
-                // Add watermark for free version
-                args.push('-vf', "drawtext=text='VALENTIS Cut':fontsize=24:fontcolor=white@0.5:x=w-tw-20:y=h-th-20");
-            }
-            
-            args.push('output.mp4');
-            
-            await ffmpeg.exec(args);
-            
-            document.getElementById('exportStatus').textContent = 'Finalizing...';
-            document.getElementById('exportProgress').style.width = '90%';
-            
-            // Read output file
-            const data = await ffmpeg.readFile('output.mp4');
-            const blob = new Blob([data.buffer], { type: 'video/mp4' });
-            const url = URL.createObjectURL(blob);
-            
-            // Download
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `edited-video-${quality}.mp4`;
-            a.click();
-            
-            document.getElementById('exportProgress').style.width = '100%';
-            
-            setTimeout(() => {
-                document.getElementById('exportLoading').classList.add('hidden');
-                document.getElementById('exportLoading').classList.remove('flex');
-                document.getElementById('exportProgress').style.width = '0%';
-            }, 1000);
-        }
-        
-        function fallbackExport() {
-            // Simple export without processing
-            document.getElementById('exportStatus').textContent = 'Preparing download...';
-            document.getElementById('exportProgress').style.width = '80%';
-            
-            setTimeout(() => {
-                const url = videoElement.src;
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'edited-video.mp4';
-                a.click();
-                
-                document.getElementById('exportLoading').classList.add('hidden');
-                document.getElementById('exportLoading').classList.remove('flex');
-            }, 1000);
-        }
-        
-        function upgradeToPro() {
-            alert('Redirecting to Pro upgrade page...\n\nIn production, this would open Stripe checkout.');
-            // window.open('https://stripe.com/checkout/pro', '_blank');
-        }
-        
-        // Drag and Drop
+
+        // ==================== DRAG AND DROP ====================
+
         const canvasContainer = document.getElementById('canvasContainer');
-        
+
         canvasContainer.addEventListener('dragover', (e) => {
             e.preventDefault();
             canvasContainer.style.background = 'rgba(59, 130, 246, 0.1)';
         });
-        
+
         canvasContainer.addEventListener('dragleave', () => {
             canvasContainer.style.background = '';
         });
-        
+
         canvasContainer.addEventListener('drop', (e) => {
             e.preventDefault();
             canvasContainer.style.background = '';
@@ -916,11 +1291,12 @@ html_code = '''<!DOCTYPE html>
                 handleVideoUpload({ target: { files } });
             }
         });
-        
-        // Keyboard shortcuts
+
+        // ==================== KEYBOARD SHORTCUTS ====================
+
         document.addEventListener('keydown', (e) => {
             if (!document.getElementById('videoEditor').classList.contains('active')) return;
-            
+
             if (e.code === 'Space') {
                 e.preventDefault();
                 togglePlay();
@@ -929,40 +1305,23 @@ html_code = '''<!DOCTYPE html>
                 e.preventDefault();
                 undo();
             }
+            if (e.ctrlKey && e.key === 'y') {
+                e.preventDefault();
+                redo();
+            }
         });
-        
+
         function undo() {
-            console.log('Undo (placeholder)');
+            console.log('Undo - placeholder');
         }
-        
+
         function redo() {
-            console.log('Redo (placeholder)');
+            console.log('Redo - placeholder');
         }
-        
+
         function zoomTimeline(delta) {
             console.log('Zoom:', delta);
         }
     </script>
 </body>
-</html>'''
-
-print("✅ کد HTML کامل ساخته شد!")
-print(f"📊 تعداد کاراکترها: {len(html_code):,}")
-print("\n🎯 ویژگی‌های اضافه شده:")
-features = [
-    "ادیتور ویدیو تمام صفحه با دکمه 'Start Editing'",
-    "پشتیبانی از FFmpeg.js برای پردازش واقعی ویدیو",
-    "آپلود ویدیو (Drag & Drop + Click)",
-    "پخش/توقف ویدیو با دکمه Space",
-    "Timeline با Playhead متحرک",
-    "ابزارهای Cut, Trim, Split",
-    "افکت‌های Brightness, Contrast, Saturation",
-    "تنظیم Speed پخش",
-    "Export با FFmpeg (720p, 1080p, 4K)",
-    "واترمارک برای نسخه رایگان",
-    "سیستم Pro با قفل‌گذاری",
-    "جایگاه تبلیغات در ادیتور",
-    "کیبورد شورت‌کات‌ها (Space, Ctrl+Z)"
-]
-for i, feature in enumerate(features, 1):
-    print(f"  {i}. {feature}")
+</html>
