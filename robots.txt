@@ -1,4 +1,43 @@
+# VALENTIS Cut - Robots.txt
+# https://www.robotstxt.org/robotstxt.html
+
 User-agent: *
 Allow: /
+Allow: /tutorials
+Allow: /templates
+Allow: /help
 
-Sitemap: https://valentiscut.com/sitemap.xml
+# Disallow admin and sensitive areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /internal/
+Disallow: /temp/
+Disallow: /uploads/private/
+Disallow: /user/settings/advanced
+Disallow: /export/processing
+Disallow: /ai/internal/
+Disallow: /ffmpeg/
+
+# Crawl delay for bots
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://valentis.cut/sitemap.xml
+
+# Special rules for specific bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0.5
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /

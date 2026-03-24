@@ -1,0 +1,22 @@
+/* TEAM */
+    Lead Developer: VALENTIS Team
+    Site: https://valentis.cut
+    Twitter: @valentiscut
+    Location: Global
+
+    UI/UX Designer: VALENTIS Design Team
+    Twitter: @valentisdesign
+    
+    AI Engineer: VALENTIS AI Lab
+    Twitter: @valentisai
+
+/* THANKS */
+    FFmpeg.wasm Team
+    WebAssembly Community
+    PWA Builders Community
+
+/* SITE */
+    Last update: 2026/03/25
+    Standards: HTML5, CSS3, ES2022, WebAssembly
+    Components: FFmpeg.wasm, IndexedDB, Service Workers, WebGL
+    Software: VALENTIS Cut v3.0.0

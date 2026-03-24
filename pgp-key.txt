@@ -1,0 +1,17 @@
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mQINBGXYZ123BEAC7... (کلید PGP شما اینجا قرار می‌گیرد)
+[این یک نمونه است - کلید واقعی باید تولید شود]
+
+# VALENTIS Cut Security Team
+# Email: security@valentis.cut
+# Key ID: 0x1234567890ABCDEF
+# Fingerprint: 1234 5678 90AB CDEF 1234 5678 90AB CDEF 1234 5678
+
+# To import this key:
+# gpg --import pgp-key.txt
+
+# To encrypt a message:
+# gpg --encrypt --armor --recipient security@valentis.cut message.txt
+
+-----END PGP PUBLIC KEY BLOCK-----

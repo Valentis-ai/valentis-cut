@@ -1,1632 +1,2456 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <title>VALENTIS Cut | Free Professional Video Editor for All Devices</title>
-    <meta name="description" content="VALENTIS Cut - The most advanced free video editor. Works on Android, iOS, Windows, Mac. No installation required. Edit like a pro anywhere.">
-    <meta name="keywords" content="video editor, free video editing, PWA, online video editor, mobile video editor, 4K video editor, AI video editing">
-    <meta name="author" content="VALENTIS Cut">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <link rel="canonical" href="https://valentiscut.com">
-    
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://valentiscut.com">
-    <meta property="og:title" content="VALENTIS Cut - Free Professional Video Editor">
-    <meta property="og:description" content="Edit videos like a pro on any device. Completely free, no watermark, no installation.">
-    <meta property="og:image" content="https://valentiscut.com/og-image.jpg">
-    <meta property="og:locale" content="en_US">
-    
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://valentiscut.com">
-    <meta property="twitter:title" content="VALENTIS Cut - Free Video Editor">
-    <meta property="twitter:description" content="Professional video editing for everyone. Free forever.">
-    <meta property="twitter:image" content="https://valentiscut.com/twitter-image.jpg">
-    
-    <meta name="theme-color" content="#0f172a">
-    <meta name="msapplication-TileColor" content="#0f172a">
-    
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#3b82f6">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            400: '#60a5fa',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#1e3a8a',
-                        },
-                        dark: {
-                            800: '#1e293b',
-                            900: '#0f172a',
-                            950: '#020617',
-                        }
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'gradient': 'gradient 8s linear infinite',
-                        'spin-slow': 'spin 3s linear infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        gradient: {
-                            '0%, 100%': { backgroundPosition: '0% 50%' },
-                            '50%': { backgroundPosition: '100% 50%' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
+    <link rel="manifest" href="/manifest.json">
+<meta name="msapplication-config" content="/browserconfig.xml">
+    <title>VALENTIS Cut - Professional Video Editor</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 80px;
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --card: #15151f;
+            --card-light: #1e1e2e;
+            --text: #ffffff;
+            --text-secondary: #a0a0b0;
+            --border: #2a2a3a;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        @font-face {
+            font-family: 'Inter';
+            src: local('Inter'), local('SF Pro Display'), local('Roboto');
         }
         
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: #020617;
-            color: #f8fafc;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-        
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #3b82f6;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #60a5fa;
-        }
-        
-        .glass {
-            background: rgba(30, 41, 59, 0.4);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .glass-strong {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .bg-animated {
-            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-        }
-        
-        .glow {
-            box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
-        }
-        .glow-hover:hover {
-            box-shadow: 0 0 60px rgba(59, 130, 246, 0.5);
-        }
-        
-        .grid-pattern {
-            background-image: 
-                linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-        }
-        
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card-hover:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
-        }
-        
-        .btn-shine {
-            position: relative;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--darker);
+            color: var(--text);
             overflow: hidden;
-        }
-        .btn-shine::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-        .btn-shine:hover::before {
-            left: 100%;
+            height: 100vh;
+            width: 100vw;
         }
         
-        .float-1 { animation: float 6s ease-in-out infinite; }
-        .float-2 { animation: float 8s ease-in-out infinite 1s; }
-        .float-3 { animation: float 7s ease-in-out infinite 2s; }
+        /* App Container */
+        #app {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+        }
         
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: #020617;
-            z-index: 9999;
+        /* Navigation */
+        .nav-bar {
+            height: 60px;
+            background: var(--dark);
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-        .loader-spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(59, 130, 246, 0.2);
-            border-top-color: #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1000;
         }
         
-        .lang-dropdown {
-            position: relative;
-        }
-        .lang-dropdown-content {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            margin-top: 8px;
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 8px;
-            min-width: 160px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s;
-        }
-        .lang-dropdown:hover .lang-dropdown-content {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .lang-option {
+        .logo {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 12px;
-            border-radius: 8px;
+            font-weight: 700;
+            font-size: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            -webkit-text-fill-color: white;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-        .lang-option:hover {
-            background: rgba(59, 130, 246, 0.2);
+            transition: all 0.2s;
+            font-size: 18px;
         }
         
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+        .nav-btn:hover {
+            background: var(--card-light);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 0 20px;
+            width: auto;
+            font-weight: 600;
+            gap: 8px;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            flex: 1;
+            display: flex;
             overflow: hidden;
-            line-height: 0;
         }
-        .wave svg {
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--dark);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 20px;
+        }
+        
+        .user-details h3 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .user-details p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .plan-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+        
+        .nav-section {
+            margin-bottom: 8px;
+        }
+        
+        .nav-section-title {
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+        
+        .nav-item:hover {
+            background: var(--card);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-weight: 600;
+        }
+        
+        .nav-item i {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        .nav-item .badge {
+            margin-left: auto;
+            background: var(--accent);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        /* Editor Area */
+        .editor-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--darker);
+        }
+        
+        /* Preview Section */
+        .preview-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             position: relative;
-            display: block;
-            width: calc(100% + 1.3px);
-            height: 150px;
-        }
-        .wave .shape-fill {
-            fill: #0f172a;
         }
         
-        @media (max-width: 768px) {
-            .mobile-hidden { display: none !important; }
-            .text-hero { font-size: 2.5rem !important; }
+        .preview-toolbar {
+            height: 50px;
+            background: var(--dark);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
         }
         
-        .tilt {
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
+        .preview-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
         }
         
-        .neon-border {
+        .aspect-ratio-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 13px;
+            cursor: pointer;
+        }
+        
+        .preview-canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .preview-canvas {
+            max-width: 100%;
+            max-height: 100%;
+            background: linear-gradient(45deg, #1a1a2e 25%, #16213e 25%, #16213e 50%, #1a1a2e 50%, #1a1a2e 75%, #16213e 75%);
+            background-size: 20px 20px;
             position: relative;
         }
-        .neon-border::before {
+        
+        .preview-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        
+        .play-btn-overlay {
+            width: 80px;
+            height: 80px;
+            background: rgba(99, 102, 241, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            cursor: pointer;
+            pointer-events: all;
+            transition: transform 0.2s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .play-btn-overlay:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Timeline Section */
+        .timeline-section {
+            height: 280px;
+            background: var(--dark);
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .timeline-toolbar {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .timeline-tools {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .tool-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+        
+        .tool-btn:hover, .tool-btn.active {
+            background: var(--card);
+            color: var(--text);
+        }
+        
+        .timeline-ruler {
+            height: 30px;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .timeline-tracks {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+        
+        .track {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+        
+        .track-label {
+            width: 120px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+        
+        .track-content {
+            flex: 1;
+            height: 40px;
+            background: var(--card);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .track-item {
+            position: absolute;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: move;
+            border: 2px solid transparent;
+            transition: border-color 0.2s;
+        }
+        
+        .track-item:hover {
+            border-color: var(--text);
+        }
+        
+        .track-item.video {
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+        }
+        
+        .track-item.audio {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .track-item.text {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+        }
+        
+        .playhead {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--text);
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .playhead::before {
             content: '';
             position: absolute;
-            inset: -2px;
-            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
-            border-radius: inherit;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .neon-border:hover::before {
-            opacity: 1;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(59, 130, 246, 0.5);
+            top: -6px;
+            left: -5px;
+            width: 12px;
+            height: 12px;
+            background: var(--text);
             border-radius: 50%;
-            pointer-events: none;
         }
         
-        .cursor-glow {
+        /* Bottom Toolbar */
+        .bottom-toolbar {
+            height: 70px;
+            background: var(--dark);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            padding: 0 20px;
+        }
+        
+        .main-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-secondary);
+        }
+        
+        .main-tool:hover {
+            color: var(--text);
+            transform: translateY(-2px);
+        }
+        
+        .main-tool.active {
+            color: var(--primary);
+        }
+        
+        .main-tool i {
+            font-size: 24px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        
+        .main-tool.active i {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .main-tool span {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* Panels */
+        .right-panel {
+            width: 320px;
+            background: var(--dark);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel-header {
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+        
+        .panel-tabs {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .panel-tab {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        
+        .panel-tab:hover, .panel-tab.active {
+            background: var(--card);
+            color: var(--text);
+        }
+        
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+        
+        .asset-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .asset-item {
+            aspect-ratio: 1;
+            background: var(--card);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .asset-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .asset-item i {
+            font-size: 32px;
+            color: var(--primary);
+        }
+        
+        .asset-item span {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .asset-item .count {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--card-light);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        /* AI Features Panel */
+        .ai-feature {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .ai-feature:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+            transform: translateX(4px);
+        }
+        
+        .ai-feature-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .ai-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .ai-feature h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .ai-feature p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal {
+            background: var(--dark);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--card);
+            border: none;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        /* Tutorial Styles */
+        .tutorial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .tutorial-card {
+            background: var(--card);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .tutorial-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+        
+        .tutorial-thumb {
+            height: 160px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+        
+        .tutorial-duration {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.8);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .tutorial-info {
+            padding: 16px;
+        }
+        
+        .tutorial-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .tutorial-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .tutorial-progress {
+            margin-top: 12px;
+            height: 4px;
+            background: var(--card-light);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .tutorial-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* Admin Panel */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .admin-table th,
+        .admin-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .admin-table th {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+        
+        .admin-table td {
+            font-size: 14px;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-badge.active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        /* Export Modal */
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .export-option {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .export-option:hover, .export-option.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+        }
+        
+        .export-option i {
+            font-size: 40px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        .export-option h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .export-option p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .quality-slider {
+            margin: 24px 0;
+        }
+        
+        .quality-slider label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            background: var(--card);
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .slider-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+            width: 75%;
+        }
+        
+        .slider-thumb {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
             width: 20px;
             height: 20px;
-            background: rgba(59, 130, 246, 0.6);
+            background: white;
             border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9998;
-            mix-blend-mode: screen;
-            transition: transform 0.1s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            left: 75%;
         }
         
-        @media (pointer: coarse) {
-            .cursor-glow { display: none !important; }
+        /* Project Manager */
+        .project-folders {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .folder {
+            width: 140px;
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .folder:hover, .folder.active {
+            border-color: var(--primary);
+            background: var(--card-light);
+        }
+        
+        .folder-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        
+        .folder-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .folder-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .project-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--card);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .project-item:hover {
+            background: var(--card-light);
+            transform: translateX(4px);
+        }
+        
+        .project-thumb {
+            width: 80px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            position: relative;
+        }
+        
+        .project-duration {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+        
+        .project-info {
+            flex: 1;
+        }
+        
+        .project-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .project-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .project-meta {
+            text-align: right;
+        }
+        
+        .project-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 60px;
+                bottom: 0;
+                z-index: 100;
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .right-panel {
+                display: none;
+            }
+        }
+        
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .recording {
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--card-light);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border);
+        }
+        
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .toast {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .toast-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .toast.success .toast-icon {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .toast.info .toast-icon {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--darker);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+            transition: opacity 0.5s;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin-bottom: 24px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .loading-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .loading-bar {
+            width: 200px;
+            height: 4px;
+            background: var(--card);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .empty-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--card);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            margin-bottom: 24px;
+        }
+        
+        .empty-state h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .empty-state p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 400px;
+            line-height: 1.6;
+        }
+        
+        .btn-primary {
+            margin-top: 24px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* AI Processing Overlay */
+        .ai-processing {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 4000;
+        }
+        
+        .ai-processing.active {
+            display: flex;
+        }
+        
+        .ai-animation {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            margin-bottom: 32px;
+        }
+        
+        .ai-ring {
+            position: absolute;
+            inset: 0;
+            border: 3px solid transparent;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+        
+        .ai-ring:nth-child(2) {
+            inset: 20px;
+            border-top-color: var(--secondary);
+            animation-duration: 1.5s;
+            animation-direction: reverse;
+        }
+        
+        .ai-ring:nth-child(3) {
+            inset: 40px;
+            border-top-color: var(--accent);
+            animation-duration: 1s;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .ai-processing h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .ai-processing p {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+        
+        /* Feature Highlights */
+        .feature-highlight {
+            position: absolute;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            animation: highlight 2s ease-in-out infinite;
+        }
+        
+        @keyframes highlight {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
     </style>
-    
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "VALENTIS Cut",
-        "applicationCategory": "VideoEditor",
-        "operatingSystem": "Android, iOS, Windows, macOS, Linux",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "50000"
-        },
-        "description": "Free professional video editor for all devices. No installation required.",
-        "url": "https://valentiscut.com",
-        "image": "https://valentiscut.com/logo.png",
-        "author": {
-            "@type": "Organization",
-            "name": "VALENTIS Cut",
-            "url": "https://valentiscut.com"
-        }
-    }
-    </script>
 </head>
-<body class="bg-dark-950">
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-logo">✂️</div>
+        <div class="loading-text">VALENTIS Cut</div>
+        <div class="loading-bar">
+            <div class="loading-progress" id="loadingProgress"></div>
+        </div>
+    </div>
+    
+    <!-- AI Processing Overlay -->
+    <div class="ai-processing" id="aiProcessing">
+        <div class="ai-animation">
+            <div class="ai-ring"></div>
+            <div class="ai-ring"></div>
+            <div class="ai-ring"></div>
+        </div>
+        <h2>AI is Processing</h2>
+        <p id="aiStatus">Analyzing video content...</p>
+    </div>
+    
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
-    <div id="loader">
-        <div class="text-center">
-            <div class="loader-spinner mx-auto mb-4"></div>
-            <div class="text-blue-400 font-bold text-xl tracking-widest uppercase">VALENTIS CUT</div>
-            <div class="text-gray-500 text-sm mt-2">Loading...</div>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="nav-bar">
+            <div class="logo">
+                <div class="logo-icon">✂️</div>
+                <span>VALENTIS Cut</span>
+            </div>
+            <div class="nav-actions">
+                <button class="nav-btn" onclick="showModal('help')" title="Help">❓</button>
+                <button class="nav-btn" onclick="toggleSidebar()" title="Menu">☰</button>
+                <button class="nav-btn primary" onclick="showModal('export')">
+                    <span>⬆️</span>
+                    <span>Export</span>
+                </button>
+            </div>
+        </nav>
+
+        <div class="main-container">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="user-info">
+                        <div class="user-avatar">A</div>
+                        <div class="user-details">
+                            <h3>Admin User</h3>
+                            <p>admin@valentis.cut</p>
+                        </div>
+                    </div>
+                    <span class="plan-badge">👑 Enterprise</span>
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <div class="nav-section">
+                        <div class="nav-section-title">Workspace</div>
+                        <div class="nav-item active" onclick="switchView('editor')">
+                            <i>🎬</i>
+                            <span>Video Editor</span>
+                        </div>
+                        <div class="nav-item" onclick="switchView('projects')">
+                            <i>📁</i>
+                            <span>Projects</span>
+                            <span class="badge">9</span>
+                        </div>
+                        <div class="nav-item" onclick="switchView('assets')">
+                            <i>🎨</i>
+                            <span>Asset Library</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">AI Tools</div>
+                        <div class="nav-item" onclick="activateAI('autocut')">
+                            <i>⚡</i>
+                            <span>AI Auto Cut</span>
+                            <span class="badge">NEW</span>
+                        </div>
+                        <div class="nav-item" onclick="activateAI('captions')">
+                            <i>📝</i>
+                            <span>Auto Captions</span>
+                        </div>
+                        <div class="nav-item" onclick="activateAI('enhance')">
+                            <i>✨</i>
+                            <span>AI Enhance</span>
+                        </div>
+                        <div class="nav-item" onclick="activateAI('bgremove')">
+                            <i>🎯</i>
+                            <span>Background Remove</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">Learn</div>
+                        <div class="nav-item" onclick="switchView('tutorials')">
+                            <i>🎓</i>
+                            <span>Tutorials</span>
+                        </div>
+                        <div class="nav-item" onclick="switchView('templates')">
+                            <i>📐</i>
+                            <span>Templates</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">Management</div>
+                        <div class="nav-item" onclick="switchView('admin')">
+                            <i>👥</i>
+                            <span>Admin Panel</span>
+                        </div>
+                        <div class="nav-item" onclick="switchView('settings')">
+                            <i>⚙️</i>
+                            <span>Settings</span>
+                        </div>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- Editor Area -->
+            <main class="editor-area" id="mainContent">
+                <!-- Preview Section -->
+                <div class="preview-section">
+                    <div class="preview-toolbar">
+                        <div class="preview-controls">
+                            <button class="aspect-ratio-btn" onclick="toggleAspectRatio()">
+                                <span>📐</span>
+                                <span id="aspectRatio">Original</span>
+                                <span>▼</span>
+                            </button>
+                            <button class="tool-btn" title="Fullscreen">⛶</button>
+                        </div>
+                        <div class="preview-controls">
+                            <button class="tool-btn" title="Undo" onclick="undo()">↩️</button>
+                            <button class="tool-btn" title="Redo" onclick="redo()">↪️</button>
+                            <button class="tool-btn" title="Settings">⚙️</button>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-canvas-container">
+                        <div class="preview-canvas" id="previewCanvas" style="width: 854px; height: 480px;">
+                            <div class="preview-overlay">
+                                <div class="play-btn-overlay" onclick="togglePlay()" id="playBtn">▶️</div>
+                            </div>
+                            <div style="position: absolute; top: 20px; left: 20px; font-size: 24px; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                                HER VOICE
+                            </div>
+                            <div style="position: absolute; bottom: 20px; right: 20px; font-size: 14px; color: var(--text-secondary);">
+                                1:06.28 / 1:57.86
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline Section -->
+                <div class="timeline-section">
+                    <div class="timeline-toolbar">
+                        <div class="timeline-tools">
+                            <button class="tool-btn active" title="Select">↖️</button>
+                            <button class="tool-btn" title="Split" onclick="splitClip()">✂️</button>
+                            <button class="tool-btn" title="Delete" onclick="deleteClip()">🗑️</button>
+                            <button class="tool-btn" title="Copy">📋</button>
+                            <div style="width: 1px; height: 24px; background: var(--border); margin: 0 8px;"></div>
+                            <button class="tool-btn" title="Zoom Out">🔍-</button>
+                            <button class="tool-btn" title="Zoom In">🔍+</button>
+                        </div>
+                        <div class="timeline-tools">
+                            <button class="tool-btn" title="Mute">🔇</button>
+                            <button class="tool-btn" title="Snap">🧲</button>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-ruler">
+                        <div class="playhead" style="left: 50%;"></div>
+                    </div>
+                    
+                    <div class="timeline-tracks">
+                        <div class="track">
+                            <div class="track-label">
+                                <span>🎵</span>
+                                <span>Music</span>
+                            </div>
+                            <div class="track-content">
+                                <div class="track-item audio" style="left: 0%; width: 30%;">
+                                    Background Music
+                                </div>
+                            </div>
+                        </div>
+                        <div class="track">
+                            <div class="track-label">
+                                <span>🔊</span>
+                                <span>Sound FX</span>
+                            </div>
+                            <div class="track-content">
+                                <div class="track-item audio" style="left: 20%; width: 10%;">
+                                    Whoosh
+                                </div>
+                            </div>
+                        </div>
+                        <div class="track">
+                            <div class="track-label">
+                                <span>🎬</span>
+                                <span>Video</span>
+                            </div>
+                            <div class="track-content">
+                                <div class="track-item video" style="left: 0%; width: 100%;">
+                                    HER_VOICE_Main.mp4
+                                </div>
+                            </div>
+                        </div>
+                        <div class="track">
+                            <div class="track-label">
+                                <span>📝</span>
+                                <span>Text</span>
+                            </div>
+                            <div class="track-content">
+                                <div class="track-item text" style="left: 10%; width: 20%;">
+                                    Title Card
+                                </div>
+                            </div>
+                        </div>
+                        <div class="track">
+                            <div class="track-label">
+                                <span>🎨</span>
+                                <span>Effects</span>
+                            </div>
+                            <div class="track-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Toolbar -->
+                <div class="bottom-toolbar">
+                    <div class="main-tool active" onclick="selectTool('filter')">
+                        <i>🎨</i>
+                        <span>Filter</span>
+                    </div>
+                    <div class="main-tool" onclick="selectTool('trim')">
+                        <i>✂️</i>
+                        <span>Trim</span>
+                    </div>
+                    <div class="main-tool" onclick="selectTool('fx')">
+                        <i>✨</i>
+                        <span>FX</span>
+                    </div>
+                    <div class="main-tool" onclick="selectTool('split')">
+                        <i>➗</i>
+                        <span>Split</span>
+                    </div>
+                    <div class="main-tool" onclick="selectTool('extract')">
+                        <i>🎯</i>
+                        <span>Extract</span>
+                    </div>
+                    <div class="main-tool" onclick="selectTool('speed')">
+                        <i>⏱️</i>
+                        <span>Speed</span>
+                    </div>
+                    <div class="main-tool" onclick="selectTool('more')">
+                        <i>⋮</i>
+                        <span>More</span>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Panel -->
+            <aside class="right-panel" id="rightPanel">
+                <div class="panel-header">
+                    <span>Assets</span>
+                    <div class="panel-tabs">
+                        <span class="panel-tab active">All</span>
+                        <span class="panel-tab">Fav</span>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div class="asset-grid">
+                        <div class="asset-item" onclick="addAsset('music')">
+                            <div style="position: relative;">
+                                <i>🎵</i>
+                                <span class="count">11</span>
+                            </div>
+                            <span>Music</span>
+                        </div>
+                        <div class="asset-item" onclick="addAsset('sfx')">
+                            <div style="position: relative;">
+                                <i>🔊</i>
+                                <span class="count">0</span>
+                            </div>
+                            <span>Sound FX</span>
+                        </div>
+                        <div class="asset-item" onclick="addAsset('filter')">
+                            <div style="position: relative;">
+                                <i>🎨</i>
+                                <span class="count">0</span>
+                            </div>
+                            <span>Filters</span>
+                        </div>
+                        <div class="asset-item" onclick="addAsset('sticker')">
+                            <div style="position: relative;">
+                                <i>😊</i>
+                                <span class="count">0</span>
+                            </div>
+                            <span>Stickers</span>
+                        </div>
+                        <div class="asset-item" onclick="addAsset('material')">
+                            <div style="position: relative;">
+                                <i>📦</i>
+                                <span class="count">0</span>
+                            </div>
+                            <span>Material</span>
+                        </div>
+                        <div class="asset-item" onclick="addAsset('font')">
+                            <div style="position: relative;">
+                                <i>🔤</i>
+                                <span class="count">7</span>
+                            </div>
+                            <span>Fonts</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 24px;">
+                        <h4 style="margin-bottom: 12px; font-size: 14px;">AI Features</h4>
+                        <div class="ai-feature" onclick="activateAI('autocut')">
+                            <div class="ai-feature-header">
+                                <div class="ai-icon">⚡</div>
+                                <div>
+                                    <h4>AI Auto Cut</h4>
+                                    <p>Automatically detect and cut scenes</p>
+                                </div>
+                            </div>
+                            <p>Smart scene detection removes silent parts and creates jump cuts automatically.</p>
+                        </div>
+                        <div class="ai-feature" onclick="activateAI('beat')">
+                            <div class="ai-feature-header">
+                                <div class="ai-icon">🎵</div>
+                                <div>
+                                    <h4>Beat Sync</h4>
+                                    <p>Sync cuts to music rhythm</p>
+                                </div>
+                            </div>
+                            <p>Automatically align your video cuts with the beat of background music.</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
 
-    <div class="cursor-glow mobile-hidden" id="cursor"></div>
-
-    <nav class="fixed top-0 left-0 right-0 z-50 glass-strong transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-                        <i class="fas fa-cut text-white text-lg"></i>
-                    </div>
-                    <span class="text-xl font-bold gradient-text tracking-tight">VALENTIS Cut</span>
-                </div>
-
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#features" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Features</a>
-                    <a href="#demo" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Online Editor</a>
-                    <a href="#download" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Download</a>
-                    <a href="#pricing" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Pricing</a>
-                </div>
-
-                <div class="hidden md:flex items-center gap-4">
-                    <div class="lang-dropdown">
-                        <button class="flex items-center gap-2 px-3 py-2 rounded-lg glass text-gray-300 hover:text-white transition-all text-sm">
-                            <i class="fas fa-globe"></i>
-                            <span id="currentLang">EN</span>
-                            <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
-                        <div class="lang-dropdown-content">
-                            <div class="lang-option" onclick="changeLanguage('en')">
-                                <span class="text-lg">🇺🇸</span>
-                                <div>
-                                    <div class="text-sm font-medium text-white">English</div>
-                                    <div class="text-xs text-gray-500">English</div>
-                                </div>
-                            </div>
-                            <div class="lang-option" onclick="changeLanguage('de')">
-                                <span class="text-lg">🇩🇪</span>
-                                <div>
-                                    <div class="text-sm font-medium text-white">Deutsch</div>
-                                    <div class="text-xs text-gray-500">German</div>
-                                </div>
-                            </div>
-                            <div class="lang-option" onclick="changeLanguage('fr')">
-                                <span class="text-lg">🇫🇷</span>
-                                <div>
-                                    <div class="text-sm font-medium text-white">Français</div>
-                                    <div class="text-xs text-gray-500">French</div>
-                                </div>
-                            </div>
-                            <div class="lang-option" onclick="changeLanguage('es')">
-                                <span class="text-lg">🇪🇸</span>
-                                <div>
-                                    <div class="text-sm font-medium text-white">Español</div>
-                                    <div class="text-xs text-gray-500">Spanish</div>
-                                </div>
-                            </div>
-                            <div class="lang-option" onclick="changeLanguage('it')">
-                                <span class="text-lg">🇮🇹</span>
-                                <div>
-                                    <div class="text-sm font-medium text-white">Italiano</div>
-                                    <div class="text-xs text-gray-500">Italian</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <a href="#download" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-medium text-sm btn-shine hover:shadow-lg hover:shadow-blue-500/30 transition-all transform hover:scale-105">
-                        Get Started Free
-                    </a>
-                </div>
-
-                <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 rounded-lg glass flex items-center justify-center text-white">
-                    <i class="fas fa-bars" id="menuIcon"></i>
-                </button>
+    <!-- Modals -->
+    
+    <!-- Export Modal -->
+    <div class="modal-overlay" id="exportModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Export Video</h2>
+                <button class="modal-close" onclick="closeModal('export')">✕</button>
             </div>
-        </div>
-
-        <div class="md:hidden hidden glass-strong border-t border-gray-800" id="mobileMenu">
-            <div class="px-4 py-4 space-y-3">
-                <a href="#features" class="block py-2 text-gray-300 hover:text-white transition-colors">Features</a>
-                <a href="#demo" class="block py-2 text-gray-300 hover:text-white transition-colors">Online Editor</a>
-                <a href="#download" class="block py-2 text-gray-300 hover:text-white transition-colors">Download</a>
-                <a href="#pricing" class="block py-2 text-blue-400 font-medium">Get Started Free</a>
+            <div class="modal-body">
+                <h3 style="margin-bottom: 16px; font-size: 14px;">Resolution</h3>
+                <div class="export-options">
+                    <div class="export-option selected" onclick="selectExport(this, '1080p')">
+                        <i>📱</i>
+                        <h4>1080p HD</h4>
+                        <p>Full HD quality</p>
+                    </div>
+                    <div class="export-option" onclick="selectExport(this, '4k')">
+                        <i>🖥️</i>
+                        <h4>4K Ultra HD</h4>
+                        <p>Pro quality</p>
+                    </div>
+                    <div class="export-option" onclick="selectExport(this, '720p')">
+                        <i>💾</i>
+                        <h4>720p HD</h4>
+                        <p>Smaller file</p>
+                    </div>
+                </div>
                 
-                <div class="pt-3 border-t border-gray-800">
-                    <p class="text-xs text-gray-500 mb-2 uppercase tracking-wider">Language</p>
-                    <div class="flex gap-2 flex-wrap">
-                        <button onclick="changeLanguage('en')" class="px-3 py-1.5 rounded-lg bg-blue-600/20 text-blue-400 text-sm border border-blue-500/30">🇺🇸 EN</button>
-                        <button onclick="changeLanguage('de')" class="px-3 py-1.5 rounded-lg glass text-gray-400 text-sm hover:text-white">🇩🇪 DE</button>
-                        <button onclick="changeLanguage('fr')" class="px-3 py-1.5 rounded-lg glass text-gray-400 text-sm hover:text-white">🇫🇷 FR</button>
-                        <button onclick="changeLanguage('es')" class="px-3 py-1.5 rounded-lg glass text-gray-400 text-sm hover:text-white">🇪🇸 ES</button>
-                        <button onclick="changeLanguage('it')" class="px-3 py-1.5 rounded-lg glass text-gray-400 text-sm hover:text-white">🇮🇹 IT</button>
+                <div class="quality-slider">
+                    <label>
+                        <span>Quality</span>
+                        <span id="qualityValue">High (75%)</span>
+                    </label>
+                    <div class="slider" onclick="adjustQuality(event)">
+                        <div class="slider-fill" id="qualityFill"></div>
+                        <div class="slider-thumb" id="qualityThumb"></div>
                     </div>
+                </div>
+                
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button class="btn-primary" style="flex: 1;" onclick="startExport()">
+                        <span>⬆️</span>
+                        <span>Export Video</span>
+                    </button>
+                    <button class="btn-primary" style="background: var(--card); flex: 1;" onclick="closeModal('export')">
+                        Cancel
+                    </button>
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
 
-    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-        <div class="absolute inset-0 bg-animated"></div>
-        <div class="absolute inset-0 grid-pattern opacity-30"></div>
-        
-        <div class="absolute top-20 left-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl float-1"></div>
-        <div class="absolute bottom-20 right-10 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl float-2"></div>
-        <div class="absolute top-1/2 left-1/3 w-24 h-24 bg-pink-500/20 rounded-full blur-3xl float-3"></div>
-
-        <div id="particles" class="absolute inset-0 pointer-events-none"></div>
-
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 animate-fade-in">
-                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span class="text-sm text-gray-300" data-i18n="newVersion">Version 2.0 Now Available</span>
-                <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full font-semibold">NEW</span>
+    <!-- Projects Modal -->
+    <div class="modal-overlay" id="projectsModal">
+        <div class="modal" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h2 class="modal-title">Your Projects</h2>
+                <button class="modal-close" onclick="closeModal('projects')">✕</button>
             </div>
-
-            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight text-hero">
-                <span class="block text-white" data-i18n="heroTitle1">Edit Videos</span>
-                <span class="gradient-text" data-i18n="heroTitle2">Like a Pro</span>
-            </h1>
-
-            <p class="text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto leading-relaxed" data-i18n="heroSubtitle">
-                The world's first advanced <span class="text-blue-400 font-semibold">PWA video editor</span>. 
-                No installation, no payment, directly in your browser.
-            </p>
-
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                <a href="#demo" class="group px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-semibold text-lg btn-shine glow-hover transition-all transform hover:scale-105 flex items-center gap-3">
-                    <span data-i18n="tryNow">Try It Now</span>
-                    <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                </a>
-                <a href="#download" class="px-8 py-4 glass text-white rounded-full font-semibold text-lg hover:bg-white/10 transition-all flex items-center gap-3">
-                    <i class="fas fa-download"></i>
-                    <span data-i18n="downloadApp">Download App</span>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-white mb-1 counter" data-target="50000">0</div>
-                    <div class="text-sm text-gray-500" data-i18n="activeUsers">Active Users</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-white mb-1 counter" data-target="100000">0</div>
-                    <div class="text-sm text-gray-500" data-i18n="videosEdited">Videos Edited</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-white mb-1">100%</div>
-                    <div class="text-sm text-gray-500" data-i18n="free">Free</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="wave">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
-            </svg>
-        </div>
-    </section>
-
-    <section id="features" class="py-24 bg-dark-900 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">
-                    <span class="gradient-text" data-i18n="featuresTitle">Powerful Features</span>
-                </h2>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto" data-i18n="featuresSubtitle">
-                    Everything you need for professional video editing, all in one place
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="glass rounded-2xl p-8 card-hover tilt neon-border group">
-                    <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/30">
-                        <i class="fas fa-bolt text-2xl text-white"></i>
+            <div class="modal-body">
+                <div class="project-folders">
+                    <div class="folder active">
+                        <div class="folder-icon">📁</div>
+                        <div class="folder-name">Standard</div>
+                        <div class="folder-count">9 items</div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3" data-i18n="fastLight">Fast & Lightweight</h3>
-                    <p class="text-gray-400 leading-relaxed" data-i18n="fastLightDesc">
-                        No installation needed, runs directly in your browser. Less than 5MB download size.
-                    </p>
-                </div>
-
-                <div class="glass rounded-2xl p-8 card-hover tilt neon-border group">
-                    <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-purple-500/30">
-                        <i class="fas fa-mobile-alt text-2xl text-white"></i>
+                    <div class="folder">
+                        <div class="folder-icon">📥</div>
+                        <div class="folder-name">Imported</div>
+                        <div class="folder-count">0 items</div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3" data-i18n="allDevices">All Devices</h3>
-                    <p class="text-gray-400 leading-relaxed" data-i18n="allDevicesDesc">
-                        Android, iOS, Windows, Mac, Linux - one app for all platforms.
-                    </p>
-                </div>
-
-                <div class="glass rounded-2xl p-8 card-hover tilt neon-border group">
-                    <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-pink-500/30">
-                        <i class="fas fa-robot text-2xl text-white"></i>
+                    <div class="folder">
+                        <div class="folder-icon">⭐</div>
+                        <div class="folder-name">Favorites</div>
+                        <div class="folder-count">3 items</div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3" data-i18n="aiPowered">AI Powered</h3>
-                    <p class="text-gray-400 leading-relaxed" data-i18n="aiPoweredDesc">
-                        Auto captions, background removal, quality enhancement, and face detection with AI.
-                    </p>
-                </div>
-
-                <div class="glass rounded-2xl p-8 card-hover tilt neon-border group">
-                    <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-green-500/30">
-                        <i class="fas fa-cloud text-2xl text-white"></i>
+                    <div class="folder">
+                        <div class="folder-icon">🗑️</div>
+                        <div class="folder-name">Trash</div>
+                        <div class="folder-count">0 items</div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-3" data-i18n="cloudStorage">Cloud Storage</h3>
-                    <p class="text-gray-400 leading-relaxed" data-i18n="cloudStorageDesc">
-                        Save your projects in the cloud and access them from any device, anywhere.
-                    </p>
                 </div>
-
-                <div class="glass rounded-2xl p-8 card-hover tilt neon-border group">
-                    <div class="w-14 h-14 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-yellow-500/30">
-                        <i class="fas fa-magic text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3" data-i18n="proEffects">Pro Effects</h3>
-                    <p class="text-gray-400 leading-relaxed" data-i18n="proEffectsDesc">
-                        Over 1000 effects, filters, transitions, and ready-to-use animations.
-                    </p>
-                </div>
-
-                <div class="glass rounded-2xl p-8 card-hover tilt neon-border group">
-                    <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-cyan-500/30">
-                        <i class="fas fa-infinity text-2xl text-white"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3" data-i18n="completelyFree">Completely Free</h3>
-                    <p class="text-gray-400 leading-relaxed" data-i18n="completelyFreeDesc">
-                        No watermarks, no limits, no costs. Free forever.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="demo" class="py-24 bg-dark-950 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-blue-900/10 to-purple-900/10"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold mb-4" data-i18n="onlineVersion">Online Version</h2>
-                <p class="text-gray-400" data-i18n="tryNowSubtitle">Try it now - no installation required</p>
-            </div>
-
-            <div class="max-w-5xl mx-auto glass-strong rounded-3xl overflow-hidden shadow-2xl shadow-blue-500/20 border border-gray-800">
-                <div class="h-14 bg-gray-900/80 border-b border-gray-800 flex items-center justify-between px-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-cut text-white text-sm"></i>
+                
+                <div class="project-list">
+                    <div class="project-item" onclick="loadProject('her-voice')">
+                        <div class="project-thumb">
+                            🎬
+                            <span class="project-duration">1:54</span>
                         </div>
-                        <span class="font-semibold text-white">VALENTIS Cut</span>
+                        <div class="project-info">
+                            <h4>HER VOICE</h4>
+                            <p>Modified: March 8, 2026 • Standard</p>
+                        </div>
+                        <div class="project-meta">
+                            <div class="project-date">003 MB</div>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                    <div class="project-item">
+                        <div class="project-thumb" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">
+                            🎵
+                            <span class="project-duration">1:50</span>
+                        </div>
+                        <div class="project-info">
+                            <h4>OUR BEAT</h4>
+                            <p>Modified: March 8, 2026 • Standard</p>
+                        </div>
+                        <div class="project-meta">
+                            <div class="project-date">038 MB</div>
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-thumb" style="background: linear-gradient(135deg, #10b981, #059669);">
+                            🤖
+                            <span class="project-duration">3:21</span>
+                        </div>
+                        <div class="project-info">
+                            <h4>VALENTIS AI</h4>
+                            <p>Modified: Feb 24, 2026 • Standard</p>
+                        </div>
+                        <div class="project-meta">
+                            <div class="project-date">020 MB</div>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="aspect-video bg-gray-900 flex">
-                    <div class="w-64 bg-gray-800/50 border-r border-gray-800 hidden lg:flex flex-col p-4 gap-3">
-                        <button class="flex items-center gap-3 p-3 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30">
-                            <i class="fas fa-video"></i>
-                            <span>Video</span>
-                        </button>
-                        <button class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-700/50 text-gray-400 transition-colors">
-                            <i class="fas fa-music"></i>
-                            <span>Audio</span>
-                        </button>
-                        <button class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-700/50 text-gray-400 transition-colors">
-                            <i class="fas fa-font"></i>
-                            <span>Text</span>
-                        </button>
-                        <button class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-700/50 text-gray-400 transition-colors">
-                            <i class="fas fa-magic"></i>
-                            <span>Effects</span>
-                        </button>
-                    </div>
-
-                    <div class="flex-1 flex flex-col">
-                        <div class="h-12 border-b border-gray-800 flex items-center px-4 gap-2">
-                            <button class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center">
-                                <i class="fas fa-play text-xs"></i>
-                            </button>
-                            <button class="w-8 h-8 rounded-lg hover:bg-gray-800 text-gray-400 flex items-center justify-center">
-                                <i class="fas fa-pause text-xs"></i>
-                            </button>
-                            <div class="h-6 w-px bg-gray-700 mx-2"></div>
-                            <span class="text-sm font-mono text-blue-400">00:00:00</span>
+    <!-- Tutorials Modal -->
+    <div class="modal-overlay" id="tutorialsModal">
+        <div class="modal" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h2 class="modal-title">Learning Center</h2>
+                <button class="modal-close" onclick="closeModal('tutorials')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="tutorial-grid">
+                    <div class="tutorial-card" onclick="playTutorial('basics')">
+                        <div class="tutorial-thumb">
+                            🎓
+                            <span class="tutorial-duration">5:30</span>
                         </div>
-
-                        <div class="flex-1 flex items-center justify-center bg-black relative">
-                            <div class="text-center">
-                                <i class="fas fa-play-circle text-6xl text-gray-700 mb-4"></i>
-                                <p class="text-gray-500">Video Preview</p>
+                        <div class="tutorial-info">
+                            <h3>Getting Started</h3>
+                            <p>Learn the basics of VALENTIS Cut interface and tools</p>
+                            <div class="tutorial-progress">
+                                <div class="tutorial-progress-bar" style="width: 100%;"></div>
                             </div>
-                            <button onclick="showDemoAlert()" class="absolute bottom-4 right-4 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-500 transition-colors">
-                                <i class="fas fa-expand mr-2"></i> Fullscreen
-                            </button>
                         </div>
-
-                        <div class="h-32 bg-gray-800/50 border-t border-gray-800 p-3">
-                            <div class="flex items-center gap-2 mb-2">
-                                <div class="w-20 h-8 bg-blue-600 rounded flex items-center px-2 text-xs text-white">
-                                    <i class="fas fa-video mr-1"></i> Clip 1
-                                </div>
-                                <div class="w-32 h-8 bg-purple-600 rounded flex items-center px-2 text-xs text-white">
-                                    <i class="fas fa-music mr-1"></i> Music
-                                </div>
+                    </div>
+                    <div class="tutorial-card" onclick="playTutorial('cutting')">
+                        <div class="tutorial-thumb" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">
+                            ✂️
+                            <span class="tutorial-duration">8:45</span>
+                        </div>
+                        <div class="tutorial-info">
+                            <h3>Master Cutting</h3>
+                            <p>Professional cutting techniques and shortcuts</p>
+                            <div class="tutorial-progress">
+                                <div class="tutorial-progress-bar" style="width: 60%;"></div>
                             </div>
-                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
-                                <div class="h-full w-1/3 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+                        </div>
+                    </div>
+                    <div class="tutorial-card" onclick="playTutorial('ai')">
+                        <div class="tutorial-thumb" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+                            🤖
+                            <span class="tutorial-duration">12:00</span>
+                        </div>
+                        <div class="tutorial-info">
+                            <h3>AI Tools Mastery</h3>
+                            <p>Auto Cut, captions, enhancement and more</p>
+                            <div class="tutorial-progress">
+                                <div class="tutorial-progress-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tutorial-card" onclick="playTutorial('effects')">
+                        <div class="tutorial-thumb" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+                            ✨
+                            <span class="tutorial-duration">15:20</span>
+                        </div>
+                        <div class="tutorial-info">
+                            <h3>Advanced Effects</h3>
+                            <p>Transitions, filters, and visual effects</p>
+                            <div class="tutorial-progress">
+                                <div class="tutorial-progress-bar" style="width: 30%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tutorial-card" onclick="playTutorial('export')">
+                        <div class="tutorial-thumb" style="background: linear-gradient(135deg, #10b981, #059669);">
+                            ⬆️
+                            <span class="tutorial-duration">6:15</span>
+                        </div>
+                        <div class="tutorial-info">
+                            <h3>Export Mastery</h3>
+                            <p>Best export settings for all platforms</p>
+                            <div class="tutorial-progress">
+                                <div class="tutorial-progress-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tutorial-card" onclick="playTutorial('shortcuts')">
+                        <div class="tutorial-thumb" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                            ⌨️
+                            <span class="tutorial-duration">10:00</span>
+                        </div>
+                        <div class="tutorial-info">
+                            <h3>Keyboard Shortcuts</h3>
+                            <p>Speed up your workflow with hotkeys</p>
+                            <div class="tutorial-progress">
+                                <div class="tutorial-progress-bar" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="text-center mt-8">
-                <p class="text-gray-500 text-sm mb-4" data-i18n="demoNote">This is a demo version. For full access:</p>
-                <a href="#download" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-medium hover:shadow-lg hover:shadow-blue-500/30 transition-all">
-                    <i class="fas fa-download"></i>
-                    <span data-i18n="downloadFull">Download Full Version</span>
-                </a>
-            </div>
         </div>
-    </section>
+    </div>
 
-    <section id="download" class="py-24 bg-dark-900 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="downloadForAll">Download for All Devices</h2>
-                <p class="text-gray-400 text-lg" data-i18n="installOnce">Install once, use everywhere</p>
+    <!-- Admin Modal -->
+    <div class="modal-overlay" id="adminModal">
+        <div class="modal" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h2 class="modal-title">Admin Panel</h2>
+                <button class="modal-close" onclick="closeModal('admin')">✕</button>
             </div>
-
-            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <div class="glass rounded-3xl p-8 text-center card-hover group">
-                    <div class="w-20 h-20 mx-auto bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
-                        <i class="fab fa-android text-4xl text-white"></i>
+            <div class="modal-body">
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-value">50K+</div>
+                        <div class="stat-label">Active Users</div>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Android</h3>
-                    <p class="text-gray-400 mb-6 text-sm">Version 7.0+</p>
-                    <button onclick="downloadApp('android')" class="w-full py-3 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-xl font-medium btn-shine hover:shadow-lg hover:shadow-green-500/30 transition-all flex items-center justify-center gap-2">
-                        <i class="fas fa-download"></i>
-                        <span>Download APK</span>
-                    </button>
-                    <p class="text-xs text-gray-500 mt-3">or install from Google Play</p>
-                </div>
-
-                <div class="glass rounded-3xl p-8 text-center card-hover group">
-                    <div class="w-20 h-20 mx-auto bg-gradient-to-br from-gray-700 to-gray-800 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-gray-500/30 group-hover:scale-110 transition-transform border border-gray-600">
-                        <i class="fab fa-apple text-4xl text-white"></i>
+                    <div class="stat-card">
+                        <div class="stat-value">100K+</div>
+                        <div class="stat-label">Videos Edited</div>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">iOS</h3>
-                    <p class="text-gray-400 mb-6 text-sm">iOS 14.0+</p>
-                    <button onclick="downloadApp('ios')" class="w-full py-3 bg-gradient-to-r from-gray-700 to-gray-600 text-white rounded-xl font-medium btn-shine hover:shadow-lg hover:shadow-gray-500/30 transition-all flex items-center justify-center gap-2">
-                        <i class="fas fa-download"></i>
-                        <span>App Store</span>
-                    </button>
-                    <p class="text-xs text-gray-500 mt-3">or install PWA</p>
-                </div>
-
-                <div class="glass rounded-3xl p-8 text-center card-hover group">
-                    <div class="w-20 h-20 mx-auto bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-desktop text-4xl text-white"></i>
+                    <div class="stat-card">
+                        <div class="stat-value">99.9%</div>
+                        <div class="stat-label">Uptime</div>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Windows & Mac</h3>
-                    <p class="text-gray-400 mb-6 text-sm">Windows 10/11 • macOS 12+</p>
-                    <button onclick="downloadApp('desktop')" class="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-xl font-medium btn-shine hover:shadow-lg hover:shadow-blue-500/30 transition-all flex items-center justify-center gap-2">
-                        <i class="fas fa-download"></i>
-                        <span>Download Desktop</span>
-                    </button>
-                    <p class="text-xs text-gray-500 mt-3">Web version also available</p>
+                    <div class="stat-card">
+                        <div class="stat-value">4.9★</div>
+                        <div class="stat-label">Rating</div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="mt-16 glass rounded-2xl p-8 max-w-3xl mx-auto border border-blue-500/30 relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
-                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                            <i class="fas fa-cut text-2xl text-white"></i>
+                
+                <h3 style="margin-bottom: 16px; font-size: 16px;">Admin Accounts (5/5)</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Admin</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Last Active</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Super Admin</td>
+                            <td>super@valentis.cut</td>
+                            <td>Owner</td>
+                            <td>Now</td>
+                            <td><span class="status-badge active">● Online</span></td>
+                        </tr>
+                        <tr>
+                            <td>Admin 1</td>
+                            <td>admin1@valentis.cut</td>
+                            <td>Manager</td>
+                            <td>2 min ago</td>
+                            <td><span class="status-badge active">● Online</span></td>
+                        </tr>
+                        <tr>
+                            <td>Admin 2</td>
+                            <td>admin2@valentis.cut</td>
+                            <td>Editor</td>
+                            <td>1 hour ago</td>
+                            <td><span class="status-badge" style="background: rgba(245, 158, 11, 0.2); color: var(--warning);">● Away</span></td>
+                        </tr>
+                        <tr>
+                            <td>Admin 3</td>
+                            <td>admin3@valentis.cut</td>
+                            <td>Support</td>
+                            <td>3 hours ago</td>
+                            <td><span class="status-badge" style="background: rgba(239, 68, 68, 0.2); color: var(--danger);">● Offline</span></td>
+                        </tr>
+                        <tr>
+                            <td>Admin 4</td>
+                            <td>admin4@valentis.cut</td>
+                            <td>Marketing</td>
+                            <td>1 day ago</td>
+                            <td><span class="status-badge" style="background: rgba(239, 68, 68, 0.2); color: var(--danger);">● Offline</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 24px; padding: 20px; background: var(--card); border-radius: 12px;">
+                    <h4 style="margin-bottom: 12px;">System Status</h4>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; font-size: 13px;">
+                        <div>
+                            <span style="color: var(--text-secondary);">Server:</span>
+                            <span style="color: var(--success); margin-left: 8px;">● Operational</span>
                         </div>
                         <div>
-                            <h4 class="text-xl font-bold text-white mb-1" data-i18n="quickInstall">Quick PWA Install</h4>
-                            <p class="text-gray-400 text-sm" data-i18n="noDownload">No download file needed</p>
-                        </div>
-                    </div>
-                    <button onclick="installPWA()" id="installBtn" class="px-8 py-3 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-colors flex items-center gap-2">
-                        <i class="fas fa-plus-circle"></i>
-                        <span data-i18n="installApp">Install App</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="pricing" class="py-24 bg-dark-950 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold mb-4" data-i18n="transparentPricing">Transparent Pricing</h2>
-                <p class="text-gray-400 text-lg" data-i18n="alwaysFree">Always free, no surprises</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <div class="glass rounded-3xl p-8 border border-gray-800 card-hover">
-                    <div class="text-center mb-8">
-                        <h3 class="text-2xl font-bold text-white mb-2" data-i18n="free">Free</h3>
-                        <div class="text-4xl font-bold text-white mb-2">$0</div>
-                        <p class="text-gray-400 text-sm" data-i18n="foreverFree">Forever free</p>
-                    </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-green-400"></i>
-                            <span data-i18n="unlimitedVideos">Unlimited video editing</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-green-400"></i>
-                            <span>1080p export</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-green-400"></i>
-                            <span data-i18n="basicEffects">100 basic effects</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-green-400"></i>
-                            <span data-i18n="noWatermark">No watermark</span>
-                        </li>
-                    </ul>
-                    <button class="w-full py-3 border-2 border-blue-500 text-blue-400 rounded-xl font-medium hover:bg-blue-500 hover:text-white transition-all" data-i18n="getStarted">
-                        Get Started
-                    </button>
-                </div>
-
-                <div class="glass rounded-3xl p-8 border-2 border-blue-500 relative transform scale-105 card-hover">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-bold rounded-full">
-                        MOST POPULAR
-                    </div>
-                    <div class="text-center mb-8">
-                        <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
-                        <div class="text-4xl font-bold gradient-text mb-2">$9<span class="text-lg text-gray-500">/month</span></div>
-                        <p class="text-gray-400 text-sm">or $90/year (save 17%)</p>
-                    </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-blue-400"></i>
-                            <span data-i18n="everythingFree">Everything in Free</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-blue-400"></i>
-                            <span>4K export</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-blue-400"></i>
-                            <span data-i18n="proEffects1000">1000+ pro effects</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-blue-400"></i>
-                            <span data-i18n="advancedAI">Advanced AI tools</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-blue-400"></i>
-                            <span data-i18n="cloudStorage100">100GB cloud storage</span>
-                        </li>
-                    </ul>
-                    <button class="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium btn-shine hover:shadow-lg hover:shadow-blue-500/30 transition-all" data-i18n="upgradePro">
-                        Upgrade to Pro
-                    </button>
-                </div>
-
-                <div class="glass rounded-3xl p-8 border border-gray-800 card-hover">
-                    <div class="text-center mb-8">
-                        <h3 class="text-2xl font-bold text-white mb-2" data-i18n="enterprise">Enterprise</h3>
-                        <div class="text-4xl font-bold text-white mb-2" data-i18n="contactUs">Contact Us</div>
-                        <p class="text-gray-400 text-sm" data-i18n="forTeams">For teams and businesses</p>
-                    </div>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-purple-400"></i>
-                            <span data-i18n="everythingPro">Everything in Pro</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-purple-400"></i>
-                            <span data-i18n="unlimitedUsers">Unlimited users</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-purple-400"></i>
-                            <span data-i18n="dedicatedAPI">Dedicated API</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-gray-300">
-                            <i class="fas fa-check text-purple-400"></i>
-                            <span>24/7 support</span>
-                        </li>
-                    </ul>
-                    <button class="w-full py-3 border-2 border-purple-500 text-purple-400 rounded-xl font-medium hover:bg-purple-500 hover:text-white transition-all" data-i18n="freeConsultation">
-                        Free Consultation
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-24 bg-dark-900 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-16" data-i18n="whatUsersSay">What Our Users Say</h2>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="glass rounded-2xl p-6 card-hover">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                            A
+                            <span style="color: var(--text-secondary);">Storage:</span>
+                            <span style="margin-left: 8px;">45% Used</span>
                         </div>
                         <div>
-                            <div class="font-semibold text-white">Alex Müller</div>
-                            <div class="text-sm text-gray-500">YouTuber, Switzerland</div>
+                            <span style="color: var(--text-secondary);">AI Queue:</span>
+                            <span style="margin-left: 8px;">12 jobs</span>
                         </div>
-                    </div>
-                    <p class="text-gray-400 leading-relaxed">
-                        "Best video editor I've ever used. I edit on my phone and export in 4K. Amazing!"
-                    </p>
-                    <div class="flex gap-1 mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-
-                <div class="glass rounded-2xl p-6 card-hover">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                            S
-                        </div>
-                        <div>
-                            <div class="font-semibold text-white">Sophie Laurent</div>
-                            <div class="text-sm text-gray-500">Video Editor, France</div>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 leading-relaxed">
-                        "The AI tools really made my work easier. Auto captions were a lifesaver for me."
-                    </p>
-                    <div class="flex gap-1 mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-
-                <div class="glass rounded-2xl p-6 card-hover">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                            M
-                        </div>
-                        <div>
-                            <div class="font-semibold text-white">Marco Rossi</div>
-                            <div class="text-sm text-gray-500">Marketer, Italy</div>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 leading-relaxed">
-                        "Being free and without watermark surprised me. Definitely try it out."
-                    </p>
-                    <div class="flex gap-1 mt-4 text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section class="py-24 bg-dark-950">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl font-bold text-center mb-12" data-i18n="faq">Frequently Asked Questions</h2>
-            
-            <div class="space-y-4" id="faqContainer">
-                <div class="glass rounded-xl overflow-hidden">
-                    <button onclick="toggleFAQ(this)" class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/5 transition-colors">
-                        <span class="font-semibold text-white" data-i18n="faq1Q">Is VALENTIS Cut really free?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="hidden px-6 pb-4 text-gray-400 leading-relaxed" data-i18n="faq1A">
-                        Yes! The basic version is completely free with no limits on the number of videos. Only advanced features like 4K and AI require a subscription.
-                    </div>
-                </div>
-
-                <div class="glass rounded-xl overflow-hidden">
-                    <button onclick="toggleFAQ(this)" class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/5 transition-colors">
-                        <span class="font-semibold text-white" data-i18n="faq2Q">Do I need to install anything?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="hidden px-6 pb-4 text-gray-400 leading-relaxed" data-i18n="faq2A">
-                        No! You can use it directly in your browser. But if you want, you can install it as a PWA to work offline.
-                    </div>
-                </div>
-
-                <div class="glass rounded-xl overflow-hidden">
-                    <button onclick="toggleFAQ(this)" class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/5 transition-colors">
-                        <span class="font-semibold text-white" data-i18n="faq3Q">Where are my videos stored?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="hidden px-6 pb-4 text-gray-400 leading-relaxed" data-i18n="faq3A">
-                        On your device (Local). We respect your privacy and don't store your videos on our servers unless you choose to.
-                    </div>
-                </div>
-
-                <div class="glass rounded-xl overflow-hidden">
-                    <button onclick="toggleFAQ(this)" class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/5 transition-colors">
-                        <span class="font-semibold text-white" data-i18n="faq4Q">How do I install the PWA?</span>
-                        <i class="fas fa-chevron-down text-gray-400 transition-transform"></i>
-                    </button>
-                    <div class="hidden px-6 pb-4 text-gray-400 leading-relaxed" data-i18n="faq4A">
-                        On Android/Chrome, the "Add to Home Screen" button will appear. On iOS, tap the Share button in Safari and select "Add to Home Screen".
-                    </div>
-                </div>
+    <!-- Help Modal -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Keyboard Shortcuts</h2>
+                <button class="modal-close" onclick="closeModal('help')">✕</button>
             </div>
-        </div>
-    </section>
-
-    <section class="py-24 bg-gradient-to-r from-blue-900/20 to-purple-900/20 relative">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-4xl md:text-5xl font-bold mb-6" data-i18n="readyToStart">Ready to Start?</h2>
-            <p class="text-xl text-gray-400 mb-8" data-i18n="joinUsers">Join 50,000+ VALENTIS Cut users worldwide</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#demo" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-semibold text-lg btn-shine glow-hover transition-all transform hover:scale-105">
-                    <i class="fas fa-rocket mr-2"></i>
-                    <span data-i18n="startFree">Start Free</span>
-                </a>
-                <a href="#download" class="px-8 py-4 glass text-white rounded-full font-semibold text-lg hover:bg-white/10 transition-all">
-                    <i class="fas fa-download mr-2"></i>
-                    <span data-i18n="downloadApp2">Download App</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-dark-950 border-t border-gray-800 pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8 mb-12">
-                <div class="col-span-2">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-cut text-white"></i>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                    <div style="padding: 16px; background: var(--card); border-radius: 10px;">
+                        <h4 style="margin-bottom: 12px; font-size: 14px;">Playback</h4>
+                        <div style="font-size: 13px; line-height: 2;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Play/Pause</span>
+                                <span style="font-family: monospace; background: var(--card-light); padding: 2px 8px; border-radius: 4px;">Space</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Previous Frame</span>
+                                <span style="font-family: monospace; background: var(--card-light); padding: 2px 8px; border-radius: 4px;">←</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Next Frame</span>
+                                <span style="font-family: monospace; background: var(--card-light); padding: 2px 8px; border-radius: 4px;">→</span>
+                            </div>
                         </div>
-                        <span class="text-xl font-bold gradient-text">VALENTIS Cut</span>
                     </div>
-                    <p class="text-gray-400 leading-relaxed mb-4 max-w-sm">
-                        The world's first advanced PWA video editor. Professional editing, completely free, for all devices.
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-600 transition-all">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-400 transition-all">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 transition-all">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-all">
-                            <i class="fab fa-github"></i>
-                        </a>
+                    <div style="padding: 16px; background: var(--card); border-radius: 10px;">
+                        <h4 style="margin-bottom: 12px; font-size: 14px;">Editing</h4>
+                        <div style="font-size: 13px; line-height: 2;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Split</span>
+                                <span style="font-family: monospace; background: var(--card-light); padding: 2px 8px; border-radius: 4px;">S</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Delete</span>
+                                <span style="font-family: monospace; background: var(--card-light); padding: 2px 8px; border-radius: 4px;">Del</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-secondary);">Undo</span>
+                                <span style="font-family: monospace; background: var(--card-light); padding: 2px 8px; border-radius: 4px;">Ctrl+Z</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Product</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
-                        <li><a href="#pricing" class="hover:text-white transition-colors">Pricing</a></li>
-                        <li><a href="#download" class="hover:text-white transition-colors">Download</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Changelog</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Support</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Tutorials</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Report Bug</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-gray-500 text-sm">
-                    &copy; 2024 VALENTIS Cut. All rights reserved.
-                </p>
-                <div class="flex gap-6 text-sm text-gray-500">
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-                    <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
 
     <script>
-        const translations = {
-            en: {
-                newVersion: "Version 2.0 Now Available",
-                heroTitle1: "Edit Videos",
-                heroTitle2: "Like a Pro",
-                heroSubtitle: 'The world\'s first advanced <span class="text-blue-400 font-semibold">PWA video editor</span>. No installation, no payment, directly in your browser.',
-                tryNow: "Try It Now",
-                downloadApp: "Download App",
-                activeUsers: "Active Users",
-                videosEdited: "Videos Edited",
-                free: "Free",
-                featuresTitle: "Powerful Features",
-                featuresSubtitle: "Everything you need for professional video editing, all in one place",
-                fastLight: "Fast & Lightweight",
-                fastLightDesc: "No installation needed, runs directly in your browser. Less than 5MB download size.",
-                allDevices: "All Devices",
-                allDevicesDesc: "Android, iOS, Windows, Mac, Linux - one app for all platforms.",
-                aiPowered: "AI Powered",
-                aiPoweredDesc: "Auto captions, background removal, quality enhancement, and face detection with AI.",
-                cloudStorage: "Cloud Storage",
-                cloudStorageDesc: "Save your projects in the cloud and access them from any device, anywhere.",
-                proEffects: "Pro Effects",
-                proEffectsDesc: "Over 1000 effects, filters, transitions, and ready-to-use animations.",
-                completelyFree: "Completely Free",
-                completelyFreeDesc: "No watermarks, no limits, no costs. Free forever.",
-                onlineVersion: "Online Version",
-                tryNowSubtitle: "Try it now - no installation required",
-                demoNote: "This is a demo version. For full access:",
-                downloadFull: "Download Full Version",
-                downloadForAll: "Download for All Devices",
-                installOnce: "Install once, use everywhere",
-                quickInstall: "Quick PWA Install",
-                noDownload: "No download file needed",
-                installApp: "Install App",
-                transparentPricing: "Transparent Pricing",
-                alwaysFree: "Always free, no surprises",
-                foreverFree: "Forever free",
-                unlimitedVideos: "Unlimited video editing",
-                basicEffects: "100 basic effects",
-                noWatermark: "No watermark",
-                getStarted: "Get Started",
-                upgradePro: "Upgrade to Pro",
-                everythingFree: "Everything in Free",
-                proEffects1000: "1000+ pro effects",
-                advancedAI: "Advanced AI tools",
-                cloudStorage100: "100GB cloud storage",
-                enterprise: "Enterprise",
-                contactUs: "Contact Us",
-                forTeams: "For teams and businesses",
-                everythingPro: "Everything in Pro",
-                unlimitedUsers: "Unlimited users",
-                dedicatedAPI: "Dedicated API",
-                freeConsultation: "Free Consultation",
-                whatUsersSay: "What Our Users Say",
-                faq: "Frequently Asked Questions",
-                faq1Q: "Is VALENTIS Cut really free?",
-                faq1A: "Yes! The basic version is completely free with no limits on the number of videos. Only advanced features like 4K and AI require a subscription.",
-                faq2Q: "Do I need to install anything?",
-                faq2A: "No! You can use it directly in your browser. But if you want, you can install it as a PWA to work offline.",
-                faq3Q: "Where are my videos stored?",
-                faq3A: "On your device (Local). We respect your privacy and don't store your videos on our servers unless you choose to.",
-                faq4Q: "How do I install the PWA?",
-                faq4A: 'On Android/Chrome, the "Add to Home Screen" button will appear. On iOS, tap the Share button in Safari and select "Add to Home Screen".',
-                readyToStart: "Ready to Start?",
-                joinUsers: "Join 50,000+ VALENTIS Cut users worldwide",
-                startFree: "Start Free",
-                downloadApp2: "Download App"
-            },
-            de: {
-                newVersion: "Version 2.0 Jetzt Verfügbar",
-                heroTitle1: "Videos Bearbeiten",
-                heroTitle2: "Wie Ein Profi",
-                heroSubtitle: 'Der weltweit erste fortschrittliche <span class="text-blue-400 font-semibold">PWA Video-Editor</span>. Keine Installation, keine Zahlung, direkt im Browser.',
-                tryNow: "Jetzt Testen",
-                downloadApp: "App Herunterladen",
-                activeUsers: "Aktive Nutzer",
-                videosEdited: "Bearbeitete Videos",
-                free: "Kostenlos",
-                featuresTitle: "Leistungsstarke Funktionen",
-                featuresSubtitle: "Alles, was Sie für professionelle Videobearbeitung brauchen, an einem Ort",
-                fastLight: "Schnell & Leicht",
-                fastLightDesc: "Keine Installation nötig, läuft direkt im Browser. Weniger als 5MB Download.",
-                allDevices: "Alle Geräte",
-                allDevicesDesc: "Android, iOS, Windows, Mac, Linux - eine App für alle Plattformen.",
-                aiPowered: "KI-Unterstützt",
-                aiPoweredDesc: "Automatische Untertitel, Hintergrundentfernung, Qualitätsverbesserung und Gesichtserkennung mit KI.",
-                cloudStorage: "Cloud-Speicher",
-                cloudStorageDesc: "Speichern Sie Ihre Projekte in der Cloud und greifen Sie von überall darauf zu.",
-                proEffects: "Pro-Effekte",
-                proEffectsDesc: "Über 1000 Effekte, Filter, Übergänge und fertige Animationen.",
-                completelyFree: "Völlig Kostenlos",
-                completelyFreeDesc: "Keine Wasserzeichen, keine Limits, keine Kosten. Für immer kostenlos.",
-                onlineVersion: "Online-Version",
-                tryNowSubtitle: "Jetzt testen - keine Installation erforderlich",
-                demoNote: "Dies ist eine Demo-Version. Für vollen Zugriff:",
-                downloadFull: "Vollversion Herunterladen",
-                downloadForAll: "Für Alle Geräte Herunterladen",
-                installOnce: "Einmal installieren, überall nutzen",
-                quickInstall: "Schnelle PWA-Installation",
-                noDownload: "Keine Datei zum Herunterladen nötig",
-                installApp: "App Installieren",
-                transparentPricing: "Transparente Preisgestaltung",
-                alwaysFree: "Immer kostenlos, keine Überraschungen",
-                foreverFree: "Für immer kostenlos",
-                unlimitedVideos: "Unbegrenzte Videobearbeitung",
-                basicEffects: "100 Basiseffekte",
-                noWatermark: "Kein Wasserzeichen",
-                getStarted: "Loslegen",
-                upgradePro: "Auf Pro Upgraden",
-                everythingFree: "Alles in Free",
-                proEffects1000: "1000+ Pro-Effekte",
-                advancedAI: "Erweiterte KI-Tools",
-                cloudStorage100: "100GB Cloud-Speicher",
-                enterprise: "Enterprise",
-                contactUs: "Kontaktieren Sie Uns",
-                forTeams: "Für Teams und Unternehmen",
-                everythingPro: "Alles in Pro",
-                unlimitedUsers: "Unbegrenzte Nutzer",
-                dedicatedAPI: "Dedizierte API",
-                freeConsultation: "Kostenlose Beratung",
-                whatUsersSay: "Was Unsere Nutzer Sagen",
-                faq: "Häufig Gestellte Fragen",
-                faq1Q: "Ist VALENTIS Cut wirklich kostenlos?",
-                faq1A: "Ja! Die Basisversion ist völlig kostenlos ohne Begrenzung der Anzahl der Videos. Nur erweiterte Funktionen wie 4K und KI erfordern ein Abonnement.",
-                faq2Q: "Muss ich etwas installieren?",
-                faq2A: "Nein! Sie können es direkt im Browser nutzen. Aber wenn Sie möchten, können Sie es als PWA installieren, um offline zu arbeiten.",
-                faq3Q: "Wo werden meine Videos gespeichert?",
-                faq3A: "Auf Ihrem Gerät (lokal). Wir respektieren Ihre Privatsphäre und speichern Ihre Videos nicht auf unseren Servern, es sei denn, Sie möchten es.",
-                faq4Q: "Wie installiere ich die PWA?",
-                faq4A: 'Auf Android/Chrome erscheint der Button "Zum Startbildschirm hinzufügen". Auf iOS tippen Sie auf die Teilen-Taste in Safari und wählen "Zum Home-Bildschirm".',
-                readyToStart: "Bereit zum Starten?",
-                joinUsers: "Schließen Sie sich über 50.000 VALENTIS Cut Nutzern weltweit an",
-                startFree: "Kostenlos Starten",
-                downloadApp2: "App Herunterladen"
-            },
-            fr: {
-                newVersion: "Version 2.0 Maintenant Disponible",
-                heroTitle1: "Éditer Des Vidéos",
-                heroTitle2: "Comme Un Pro",
-                heroSubtitle: 'Le premier éditeur vidéo <span class="text-blue-400 font-semibold">PWA avancé</span> au monde. Pas d\'installation, pas de paiement, directement dans votre navigateur.',
-                tryNow: "Essayer Maintenant",
-                downloadApp: "Télécharger l'App",
-                activeUsers: "Utilisateurs Actifs",
-                videosEdited: "Vidéos Éditées",
-                free: "Gratuit",
-                featuresTitle: "Fonctionnalités Puissantes",
-                featuresSubtitle: "Tout ce dont vous avez besoin pour l'édition vidéo professionnelle, en un seul endroit",
-                fastLight: "Rapide & Léger",
-                fastLightDesc: "Aucune installation nécessaire, fonctionne directement dans votre navigateur. Moins de 5Mo à télécharger.",
-                allDevices: "Tous les Appareils",
-                allDevicesDesc: "Android, iOS, Windows, Mac, Linux - une application pour toutes les plateformes.",
-                aiPowered: "Propulsé par IA",
-                aiPoweredDesc: "Sous-titres automatiques, suppression d'arrière-plan, amélioration de la qualité et détection de visage avec IA.",
-                cloudStorage: "Stockage Cloud",
-                cloudStorageDesc: "Enregistrez vos projets dans le cloud et accédez-y depuis n'importe quel appareil, n'importe où.",
-                proEffects: "Effets Pro",
-                proEffectsDesc: "Plus de 1000 effets, filtres, transitions et animations prêtes à l'emploi.",
-                completelyFree: "Complètement Gratuit",
-                completelyFreeDesc: "Pas de filigrane, pas de limites, pas de coûts. Gratuit pour toujours.",
-                onlineVersion: "Version En Ligne",
-                tryNowSubtitle: "Essayez maintenant - aucune installation requise",
-                demoNote: "Ceci est une version démo. Pour un accès complet :",
-                downloadFull: "Télécharger la Version Complète",
-                downloadForAll: "Télécharger pour Tous les Appareils",
-                installOnce: "Installez une fois, utilisez partout",
-                quickInstall: "Installation PWA Rapide",
-                noDownload: "Aucun fichier à télécharger nécessaire",
-                installApp: "Installer l'App",
-                transparentPricing: "Tarification Transparente",
-                alwaysFree: "Toujours gratuit, pas de surprises",
-                foreverFree: "Gratuit pour toujours",
-                unlimitedVideos: "Montage vidéo illimité",
-                basicEffects: "100 effets de base",
-                noWatermark: "Pas de filigrane",
-                getStarted: "Commencer",
-                upgradePro: "Passer à Pro",
-                everythingFree: "Tout dans Free",
-                proEffects1000: "Plus de 1000 effets pro",
-                advancedAI: "Outils IA avancés",
-                cloudStorage100: "100Go de stockage cloud",
-                enterprise: "Entreprise",
-                contactUs: "Contactez-Nous",
-                forTeams: "Pour les équipes et les entreprises",
-                everythingPro: "Tout dans Pro",
-                unlimitedUsers: "Utilisateurs illimités",
-                dedicatedAPI: "API dédiée",
-                freeConsultation: "Consultation Gratuite",
-                whatUsersSay: "Ce Que Disent Nos Utilisateurs",
-                faq: "Questions Fréquemment Posées",
-                faq1Q: "VALENTIS Cut est-il vraiment gratuit ?",
-                faq1A: "Oui ! La version de base est complètement gratuite sans limite sur le nombre de vidéos. Seules les fonctionnalités avancées comme la 4K et l'IA nécessitent un abonnement.",
-                faq2Q: "Dois-je installer quelque chose ?",
-                faq2A: "Non ! Vous pouvez l'utiliser directement dans votre navigateur. Mais si vous le souhaitez, vous pouvez l'installer comme PWA pour travailler hors ligne.",
-                faq3Q: "Où mes vidéos sont-elles stockées ?",
-                faq3A: "Sur votre appareil (local). Nous respectons votre vie privée et ne stockons pas vos vidéos sur nos serveurs sauf si vous choisissez de le faire.",
-                faq4Q: "Comment installer la PWA ?",
-                faq4A: "Sur Android/Chrome, le bouton 'Ajouter à l'écran d'accueil' apparaîtra. Sur iOS, appuyez sur le bouton Partager dans Safari et sélectionnez 'Ajouter à l'écran d'accueil'.",
-                readyToStart: "Prêt à Commencer ?",
-                joinUsers: "Rejoignez plus de 50 000 utilisateurs VALENTIS Cut dans le monde",
-                startFree: "Commencer Gratuitement",
-                downloadApp2: "Télécharger l'App"
-            },
-            es: {
-                newVersion: "Versión 2.0 Ya Disponible",
-                heroTitle1: "Edita Videos",
-                heroTitle2: "Como Un Profesional",
-                heroSubtitle: 'El primer editor de video <span class="text-blue-400 font-semibold">PWA avanzado</span> del mundo. Sin instalación, sin pago, directamente en tu navegador.',
-                tryNow: "Pruébalo Ahora",
-                downloadApp: "Descargar App",
-                activeUsers: "Usuarios Activos",
-                videosEdited: "Videos Editados",
-                free: "Gratis",
-                featuresTitle: "Características Poderosas",
-                featuresSubtitle: "Todo lo que necesitas para edición de video profesional, en un solo lugar",
-                fastLight: "Rápido y Ligero",
-                fastLightDesc: "No se necesita instalación, funciona directamente en tu navegador. Menos de 5MB de descarga.",
-                allDevices: "Todos los Dispositivos",
-                allDevicesDesc: "Android, iOS, Windows, Mac, Linux - una app para todas las plataformas.",
-                aiPowered: "Impulsado por IA",
-                aiPoweredDesc: "Subtítulos automáticos, eliminación de fondo, mejora de calidad y detección facial con IA.",
-                cloudStorage: "Almacenamiento en la Nube",
-                cloudStorageDesc: "Guarda tus proyectos en la nube y accede a ellos desde cualquier dispositivo, en cualquier lugar.",
-                proEffects: "Efectos Pro",
-                proEffectsDesc: "Más de 1000 efectos, filtros, transiciones y animaciones listas para usar.",
-                completelyFree: "Completamente Gratis",
-                completelyFreeDesc: "Sin marcas de agua, sin límites, sin costos. Gratis para siempre.",
-                onlineVersion: "Versión Online",
-                tryNowSubtitle: "Pruébalo ahora - no se requiere instalación",
-                demoNote: "Esta es una versión demo. Para acceso completo:",
-                downloadFull: "Descargar Versión Completa",
-                downloadForAll: "Descargar para Todos los Dispositivos",
-                installOnce: "Instala una vez, usa en todas partes",
-                quickInstall: "Instalación Rápida PWA",
-                noDownload: "No se necesita archivo de descarga",
-                installApp: "Instalar App",
-                transparentPricing: "Precios Transparentes",
-                alwaysFree: "Siempre gratis, sin sorpresas",
-                foreverFree: "Gratis para siempre",
-                unlimitedVideos: "Edición de video ilimitada",
-                basicEffects: "100 efectos básicos",
-                noWatermark: "Sin marca de agua",
-                getStarted: "Empezar",
-                upgradePro: "Actualizar a Pro",
-                everythingFree: "Todo en Free",
-                proEffects1000: "Más de 1000 efectos pro",
-                advancedAI: "Herramientas de IA avanzadas",
-                cloudStorage100: "100GB de almacenamiento en la nube",
-                enterprise: "Empresarial",
-                contactUs: "Contáctanos",
-                forTeams: "Para equipos y empresas",
-                everythingPro: "Todo en Pro",
-                unlimitedUsers: "Usuarios ilimitados",
-                dedicatedAPI: "API dedicada",
-                freeConsultation: "Consulta Gratis",
-                whatUsersSay: "Lo Que Dicen Nuestros Usuarios",
-                faq: "Preguntas Frecuentes",
-                faq1Q: "¿VALENTIS Cut es realmente gratis?",
-                faq1A: "¡Sí! La versión básica es completamente gratis sin límites en la cantidad de videos. Solo las características avanzadas como 4K e IA requieren suscripción.",
-                faq2Q: "¿Necesito instalar algo?",
-                faq2A: "¡No! Puedes usarlo directamente en tu navegador. Pero si quieres, puedes instalarlo como PWA para trabajar sin conexión.",
-                faq3Q: "¿Dónde se almacenan mis videos?",
-                faq3A: "En tu dispositivo (local). Respetamos tu privacidad y no almacenamos tus videos en nuestros servidores a menos que elijas hacerlo.",
-                faq4Q: "¿Cómo instalo la PWA?",
-                faq4A: 'En Android/Chrome, aparecerá el botón "Agregar a pantalla de inicio". En iOS, toca Compartir en Safari, luego "Agregar a pantalla de inicio".',
-                readyToStart: "¿Listo para Empezar?",
-                joinUsers: "Únete a más de 50,000 usuarios de VALENTIS Cut en todo el mundo",
-                startFree: "Empezar Gratis",
-                downloadApp2: "Descargar App"
-            },
-            it: {
-                newVersion: "Versione 2.0 Ora Disponibile",
-                heroTitle1: "Modifica Video",
-                heroTitle2: "Come Un Professionista",
-                heroSubtitle: 'Il primo editor video <span class="text-blue-400 font-semibold">PWA avanzato</span> al mondo. Nessuna installazione, nessun pagamento, direttamente nel tuo browser.',
-                tryNow: "Provalo Ora",
-                downloadApp: "Scarica App",
-                activeUsers: "Utenti Attivi",
-                videosEdited: "Video Modificati",
-                free: "Gratuito",
-                featuresTitle: "Funzionalità Potenti",
-                featuresSubtitle: "Tutto ciò di cui hai bisogno per l'editing video professionale, in un unico posto",
-                fastLight: "Veloce e Leggero",
-                fastLightDesc: "Nessuna installazione necessaria, funziona direttamente nel tuo browser. Meno di 5MB di download.",
-                allDevices: "Tutti i Dispositivi",
-                allDevicesDesc: "Android, iOS, Windows, Mac, Linux - un'app per tutte le piattaforme.",
-                aiPowered: "Alimentato da IA",
-                aiPoweredDesc: "Sottotitoli automatici, rimozione sfondo, miglioramento qualità e rilevamento volti con IA.",
-                cloudStorage: "Archiviazione Cloud",
-                cloudStorageDesc: "Salva i tuoi progetti nel cloud e accedi da qualsiasi dispositivo, ovunque.",
-                proEffects: "Effetti Pro",
-                proEffectsDesc: "Oltre 1000 effetti, filtri, transizioni e animazioni pronte all'uso.",
-                completelyFree: "Completamente Gratuito",
-                completelyFreeDesc: "Nessun watermark, nessun limite, nessun costo. Gratuito per sempre.",
-                onlineVersion: "Versione Online",
-                tryNowSubtitle: "Provalo ora - nessuna installazione richiesta",
-                demoNote: "Questa è una versione demo. Per accesso completo:",
-                downloadFull: "Scarica Versione Completa",
-                downloadForAll: "Scarica per Tutti i Dispositivi",
-                installOnce: "Installa una volta, usa ovunque",
-                quickInstall: "Installazione Rapida PWA",
-                noDownload: "Nessun file da scaricare necessario",
-                installApp: "Installa App",
-                transparentPricing: "Prezzi Trasparenti",
-                alwaysFree: "Sempre gratis, nessuna sorpresa",
-                foreverFree: "Gratuito per sempre",
-                unlimitedVideos: "Editing video illimitato",
-                basicEffects: "100 effetti base",
-                noWatermark: "Nessun watermark",
-                getStarted: "Inizia",
-                upgradePro: "Passa a Pro",
-                everythingFree: "Tutto in Free",
-                proEffects1000: "Oltre 1000 effetti pro",
-                advancedAI: "Strumenti IA avanzati",
-                cloudStorage100: "100GB di archiviazione cloud",
-                enterprise: "Enterprise",
-                contactUs: "Contattaci",
-                forTeams: "Per team e aziende",
-                everythingPro: "Tutto in Pro",
-                unlimitedUsers: "Utenti illimitati",
-                dedicatedAPI: "API dedicata",
-                freeConsultation: "Consulenza Gratuita",
-                whatUsersSay: "Cosa Dicono i Nostri Utenti",
-                faq: "Domande Frequenti",
-                faq1Q: "VALENTIS Cut è davvero gratuito?",
-                faq1A: "Sì! La versione base è completamente gratuita senza limiti sul numero di video. Solo le funzionalità avanzate come 4K e IA richiedono un abbonamento.",
-                faq2Q: "Devo installare qualcosa?",
-                faq2A: "No! Puoi usarlo direttamente nel tuo browser. Ma se vuoi, puoi installarlo come PWA per lavorare offline.",
-                faq3Q: "Dove sono archiviati i miei video?",
-                faq3A: "Sul tuo dispositivo (locale). Rispettiamo la tua privacy e non archiviamo i tuoi video sui nostri server a meno che tu non scelga di farlo.",
-                faq4Q: "Come installo la PWA?",
-                faq4A: 'Su Android/Chrome, apparirà il pulsante "Aggiungi a schermata Home". Su iOS, tocca Condividi in Safari, poi "Aggiungi a schermata Home".',
-                readyToStart: "Pronto per Iniziare?",
-                joinUsers: "Unisciti a oltre 50.000 utenti VALENTIS Cut in tutto il mondo",
-                startFree: "Inizia Gratis",
-                downloadApp2: "Scarica App"
-            }
+        // App State
+        const state = {
+            currentView: 'editor',
+            isPlaying: false,
+            currentTime: 66.28,
+            duration: 117.86,
+            selectedTool: 'filter',
+            aspectRatio: 'original',
+            quality: 75,
+            undoStack: [],
+            redoStack: [],
+            admins: [
+                { id: 1, name: 'Super Admin', email: 'super@valentis.cut', role: 'Owner', status: 'online' },
+                { id: 2, name: 'Admin 1', email: 'admin1@valentis.cut', role: 'Manager', status: 'online' },
+                { id: 3, name: 'Admin 2', email: 'admin2@valentis.cut', role: 'Editor', status: 'away' },
+                { id: 4, name: 'Admin 3', email: 'admin3@valentis.cut', role: 'Support', status: 'offline' },
+                { id: 5, name: 'Admin 4', email: 'admin4@valentis.cut', role: 'Marketing', status: 'offline' }
+            ]
         };
 
-        let currentLanguage = 'en';
-
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            document.getElementById('currentLang').textContent = lang.toUpperCase();
-            
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    if (element.innerHTML.includes('<')) {
-                        element.innerHTML = translations[lang][key];
-                    } else {
-                        element.textContent = translations[lang][key];
-                    }
-                }
-            });
-            
-            localStorage.setItem('valentis-language', lang);
-            document.getElementById('mobileMenu').classList.add('hidden');
-        }
-
-        const savedLang = localStorage.getItem('valentis-language');
-        if (savedLang && translations[savedLang]) {
-            changeLanguage(savedLang);
-        }
-
+        // Loading Screen
         window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
-                document.getElementById('loader').style.visibility = 'hidden';
-                initAnimations();
-            }, 1000);
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('loadingScreen').classList.add('hidden');
+                        showToast('Welcome to VALENTIS Cut!', 'success');
+                    }, 500);
+                }
+                document.getElementById('loadingProgress').style.width = progress + '%';
+            }, 200);
         });
 
-        function initAnimations() {
-            gsap.registerPlugin(ScrollTrigger);
-
-            gsap.from('.text-hero', {
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                ease: 'power3.out'
-            });
-
-            gsap.utils.toArray('.card-hover').forEach((card, i) => {
-                gsap.from(card, {
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top 85%',
-                    },
-                    y: 50,
-                    opacity: 0,
-                    duration: 0.6,
-                    delay: i * 0.1,
-                    ease: 'power3.out'
-                });
-            });
-
-            const counters = document.querySelectorAll('.counter');
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                gsap.to(counter, {
-                    scrollTrigger: {
-                        trigger: counter,
-                        start: 'top 85%',
-                    },
-                    innerHTML: target,
-                    duration: 2,
-                    snap: { innerHTML: 1 },
-                    ease: 'power2.out',
-                    onUpdate: function() {
-                        counter.innerHTML = Math.floor(this.targets()[0].innerHTML).toLocaleString();
-                    }
-                });
-            });
+        // Navigation
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
         }
 
-        const cursor = document.getElementById('cursor');
-        if (window.matchMedia('(pointer: fine)').matches) {
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX - 10 + 'px';
-                cursor.style.top = e.clientY - 10 + 'px';
-            });
-
-            document.addEventListener('mousedown', () => {
-                cursor.style.transform = 'scale(0.8)';
-            });
-
-            document.addEventListener('mouseup', () => {
-                cursor.style.transform = 'scale(1)';
-            });
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const icon = document.getElementById('menuIcon');
+        function switchView(view) {
+            state.currentView = view;
             
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                menu.classList.add('hidden');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.closest('.nav-item')?.classList.add('active');
+            
+            // Handle different views
+            switch(view) {
+                case 'projects':
+                    showModal('projects');
+                    break;
+                case 'tutorials':
+                    showModal('tutorials');
+                    break;
+                case 'admin':
+                    showModal('admin');
+                    break;
+                case 'editor':
+                    // Already on editor
+                    break;
+                default:
+                    showToast(`${view} view coming soon!`, 'info');
             }
         }
 
-        let lastScroll = 0;
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 100) {
-                navbar.classList.add('glass-strong');
-                navbar.classList.remove('glass');
-            } else {
-                navbar.classList.remove('glass-strong');
-                navbar.classList.add('glass');
-            }
-            
-            lastScroll = currentScroll;
-        });
-
-        function toggleFAQ(button) {
-            const answer = button.nextElementSibling;
-            const icon = button.querySelector('i');
-            
-            if (answer.classList.contains('hidden')) {
-                answer.classList.remove('hidden');
-                icon.style.transform = 'rotate(180deg)';
-            } else {
-                answer.classList.add('hidden');
-                icon.style.transform = 'rotate(0)';
+        // Modal System
+        function showModal(type) {
+            const modal = document.getElementById(type + 'Modal');
+            if (modal) {
+                modal.classList.add('active');
             }
         }
 
-        function downloadApp(platform) {
-            const messages = {
-                android: 'Preparing download for Android...',
-                ios: 'Redirecting to App Store...',
-                desktop: 'Preparing download for Windows/Mac...'
-            };
-            
-            alert(messages[platform] + '\n\nIn the real version, download would start automatically.');
-        }
-
-        function showDemoAlert() {
-            const messages = {
-                en: 'This is a demo version. Install the full app for all features.',
-                de: 'Dies ist eine Demo-Version. Installieren Sie die vollständige App für alle Funktionen.',
-                fr: 'Ceci est une version démo. Installez l\'application complète pour toutes les fonctionnalités.',
-                es: 'Esta es una versión demo. Instala la aplicación completa para todas las funciones.',
-                it: 'Questa è una versione demo. Installa l\'app completa per tutte le funzionalità.'
-            };
-            alert(messages[currentLanguage] || messages.en);
-        }
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
-        function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User installed PWA');
-                    }
-                    deferredPrompt = null;
-                });
-            } else {
-                const messages = {
-                    en: 'To install:\n\nAndroid: Tap "Add to Home Screen" in Chrome menu.\niOS: Tap Share in Safari, then "Add to Home Screen".',
-                    de: 'Zur Installation:\n\nAndroid: Tippen Sie in Chrome auf "Zum Startbildschirm hinzufügen".\niOS: Tippen Sie in Safari auf Teilen, dann "Zum Home-Bildschirm".',
-                    fr: 'Pour installer:\n\nAndroid: Appuyez sur "Ajouter à l\'écran d\'accueil" dans Chrome.\niOS: Appuyez sur Partager dans Safari, puis "Ajouter à l\'écran d\'accueil".',
-                    es: 'Para instalar:\n\nAndroid: Toca "Agregar a pantalla de inicio" en Chrome.\niOS: Toca Compartir en Safari, luego "Agregar a pantalla de inicio".',
-                    it: 'Per installare:\n\nAndroid: Tocca "Aggiungi a schermata Home" in Chrome.\niOS: Tocca Condividi in Safari, poi "Aggiungi a schermata Home".'
-                };
-                alert(messages[currentLanguage] || messages.en);
+        function closeModal(type) {
+            const modal = document.getElementById(type + 'Modal');
+            if (modal) {
+                modal.classList.remove('active');
             }
         }
 
-        function createParticles() {
-            const container = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                container.appendChild(particle);
-            }
-        }
-        createParticles();
-
-        document.querySelectorAll('.tilt').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-            });
-        });
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
                 }
             });
         });
+
+        // Playback Controls
+        function togglePlay() {
+            state.isPlaying = !state.isPlaying;
+            const btn = document.getElementById('playBtn');
+            btn.textContent = state.isPlaying ? '⏸️' : '▶️';
+            
+            if (state.isPlaying) {
+                simulatePlayback();
+            }
+        }
+
+        function simulatePlayback() {
+            if (!state.isPlaying) return;
+            
+            state.currentTime += 0.1;
+            if (state.currentTime >= state.duration) {
+                state.currentTime = 0;
+                state.isPlaying = false;
+                document.getElementById('playBtn').textContent = '▶️';
+            }
+            
+            // Update playhead position
+            const progress = (state.currentTime / state.duration) * 100;
+            document.querySelector('.playhead').style.left = progress + '%';
+            
+            requestAnimationFrame(simulatePlayback);
+        }
+
+        // Timeline Tools
+        function splitClip() {
+            saveState();
+            showToast('Clip split at playhead', 'success');
+            // Visual feedback
+            document.querySelector('.track-item.video').style.boxShadow = '0 0 20px var(--primary)';
+            setTimeout(() => {
+                document.querySelector('.track-item.video').style.boxShadow = '';
+            }, 300);
+        }
+
+        function deleteClip() {
+            saveState();
+            showToast('Selected clip deleted', 'info');
+        }
+
+        function undo() {
+            if (state.undoStack.length > 0) {
+                const action = state.undoStack.pop();
+                state.redoStack.push(action);
+                showToast('Undo successful', 'info');
+            } else {
+                showToast('Nothing to undo', 'info');
+            }
+        }
+
+        function redo() {
+            if (state.redoStack.length > 0) {
+                const action = state.redoStack.pop();
+                state.undoStack.push(action);
+                showToast('Redo successful', 'info');
+            } else {
+                showToast('Nothing to redo', 'info');
+            }
+        }
+
+        function saveState() {
+            state.undoStack.push({ time: Date.now() });
+            if (state.undoStack.length > 50) state.undoStack.shift();
+        }
+
+        // Bottom Toolbar
+        function selectTool(tool) {
+            state.selectedTool = tool;
+            document.querySelectorAll('.main-tool').forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            const toolNames = {
+                'filter': 'Filter',
+                'trim': 'Trim',
+                'fx': 'Effects',
+                'split': 'Split',
+                'extract': 'Extract',
+                'speed': 'Speed',
+                'more': 'More Tools'
+            };
+            
+            showToast(`${toolNames[tool]} tool activated`, 'info');
+        }
+
+        // AI Features
+        function activateAI(feature) {
+            const aiPanel = document.getElementById('aiProcessing');
+            const statusText = document.getElementById('aiStatus');
+            
+            const messages = {
+                'autocut': 'Analyzing video for scene detection...',
+                'captions': 'Transcribing audio to text...',
+                'enhance': 'Enhancing video quality with AI...',
+                'bgremove': 'Removing background...',
+                'beat': 'Analyzing music rhythm...'
+            };
+            
+            statusText.textContent = messages[feature] || 'Processing...';
+            aiPanel.classList.add('active');
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                aiPanel.classList.remove('active');
+                showToast('AI processing complete!', 'success');
+                
+                if (feature === 'autocut') {
+                    applyAutoCut();
+                }
+            }, 3000);
+        }
+
+        function applyAutoCut() {
+            // Visual feedback for auto cut
+            const videoTrack = document.querySelector('.track-item.video');
+            videoTrack.style.background = 'linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899)';
+            videoTrack.innerHTML = 'HER_VOICE_Main.mp4 <span style="margin-left: 8px; font-size: 10px;">[AI CUT]</span>';
+            
+            // Add cut markers
+            showToast('Auto Cut: 5 scenes detected and cut', 'success');
+        }
+
+        // Asset Library
+        function addAsset(type) {
+            const names = {
+                'music': 'Music Track',
+                'sfx': 'Sound Effect',
+                'filter': 'Filter Preset',
+                'sticker': 'Sticker',
+                'material': 'Material',
+                'font': 'Font Style'
+            };
+            showToast(`Added ${names[type]} to timeline`, 'success');
+        }
+
+        // Export
+        function selectExport(el, resolution) {
+            document.querySelectorAll('.export-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            showToast(`Resolution set to ${resolution}`, 'info');
+        }
+
+        function adjustQuality(e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const percent = Math.max(0, Math.min(100, (x / rect.width) * 100));
+            
+            state.quality = Math.round(percent);
+            document.getElementById('qualityFill').style.width = percent + '%';
+            document.getElementById('qualityThumb').style.left = percent + '%';
+            
+            let qualityText = 'Low';
+            if (percent > 33) qualityText = 'Medium';
+            if (percent > 66) qualityText = 'High';
+            if (percent > 90) qualityText = 'Maximum';
+            
+            document.getElementById('qualityValue').textContent = `${qualityText} (${Math.round(percent)}%)`;
+        }
+
+        function startExport() {
+            closeModal('export');
+            showToast('Export started! Processing...', 'success');
+            
+            setTimeout(() => {
+                showToast('Export complete! Video saved.', 'success');
+            }, 5000);
+        }
+
+        // Aspect Ratio
+        function toggleAspectRatio() {
+            const ratios = ['Original', '16:9', '9:16', '1:1', '4:5'];
+            const current = ratios.indexOf(state.aspectRatio);
+            state.aspectRatio = ratios[(current + 1) % ratios.length];
+            document.getElementById('aspectRatio').textContent = state.aspectRatio;
+            
+            // Adjust preview canvas
+            const canvas = document.getElementById('previewCanvas');
+            switch(state.aspectRatio) {
+                case '9:16':
+                    canvas.style.width = '270px';
+                    canvas.style.height = '480px';
+                    break;
+                case '1:1':
+                    canvas.style.width = '480px';
+                    canvas.style.height = '480px';
+                    break;
+                case '4:5':
+                    canvas.style.width = '384px';
+                    canvas.style.height = '480px';
+                    break;
+                default:
+                    canvas.style.width = '854px';
+                    canvas.style.height = '480px';
+            }
+        }
+
+        // Projects
+        function loadProject(id) {
+            closeModal('projects');
+            showToast('Loading project...', 'info');
+            setTimeout(() => {
+                showToast('Project loaded successfully!', 'success');
+            }, 1000);
+        }
+
+        // Tutorials
+        function playTutorial(id) {
+            showToast('Starting tutorial...', 'info');
+            setTimeout(() => {
+                showToast('Tutorial playing in picture-in-picture mode', 'success');
+            }, 500);
+        }
+
+        // Toast System
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icons = {
+                'success': '✓',
+                'info': 'ℹ️',
+                'error': '✕'
+            };
+            
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type]}</div>
+                <div>${message}</div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            
+            switch(e.key) {
+                case ' ':
+                    e.preventDefault();
+                    togglePlay();
+                    break;
+                case 's':
+                case 'S':
+                    splitClip();
+                    break;
+                case 'Delete':
+                case 'Backspace':
+                    deleteClip();
+                    break;
+                case 'z':
+                    if (e.ctrlKey || e.metaKey) {
+                        e.shiftKey ? redo() : undo();
+                    }
+                    break;
+                case 'ArrowLeft':
+                    state.currentTime = Math.max(0, state.currentTime - 1);
+                    updatePlayhead();
+                    break;
+                case 'ArrowRight':
+                    state.currentTime = Math.min(state.duration, state.currentTime + 1);
+                    updatePlayhead();
+                    break;
+            }
+        });
+
+        function updatePlayhead() {
+            const progress = (state.currentTime / state.duration) * 100;
+            document.querySelector('.playhead').style.left = progress + '%';
+        }
+
+        // Initialize
+        console.log('VALENTIS Cut v3.0 - Professional Video Editor');
+        console.log('5 Admin Accounts Configured');
+        console.log('AI Auto Cut Ready');
+        console.log('All systems operational');
     </script>
+    if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('SW registered:', registration);
+      })
+      .catch(error => {
+        console.log('SW registration failed:', error);
+      });
+  });
+}
 </body>
 </html>

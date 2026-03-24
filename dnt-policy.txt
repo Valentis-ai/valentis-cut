@@ -1,0 +1,43 @@
+# VALENTIS Cut - Do Not Track Policy
+# Version: 1.0
+# Last Updated: 2026-03-25
+
+# This website respects the Do Not Track (DNT) header.
+
+# Policy
+VALENTIS Cut ("we", "us", "our") respects your privacy and honors the 
+Do Not Track (DNT) preference signal sent by your browser.
+
+# What is DNT?
+Do Not Track is a technology and policy proposal that enables users to 
+opt out of tracking by websites they do not visit, including analytics 
+services, advertising networks, and social platforms.
+
+# Our Commitment
+When we detect a DNT signal from your browser:
+1. We do not track your browsing activity across third-party websites
+2. We disable non-essential analytics cookies
+3. We do not serve personalized advertisements
+4. We limit data collection to essential service functionality only
+
+# Exceptions
+DNT signals do not affect:
+- Essential cookies required for site functionality
+- Security and fraud prevention measures
+- Aggregate, non-identifiable usage statistics
+- Data required for video processing and editing services
+
+# Contact
+For questions about our DNT policy:
+Email: privacy@valentis.cut
+URL: https://valentis.cut/privacy/dnt
+
+# Compliance
+This policy complies with:
+- California Consumer Privacy Act (CCPA)
+- General Data Protection Regulation (GDPR)
+- ePrivacy Directive (EU Cookie Law)
+
+# Verification
+This policy can be verified at:
+https://valentis.cut/.well-known/dnt-policy.txt

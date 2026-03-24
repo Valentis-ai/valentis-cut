@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "entity": {
+    "type": "organization",
+    "name": "VALENTIS Cut",
+    "email": "funding@valentis.cut",
+    "url": "https://valentis.cut"
+  },
+  "funding": {
+    "channels": [
+      {
+        "platform": "GitHub Sponsors",
+        "url": "https://github.com/sponsors/valentiscut",
+        "description": "Support development on GitHub"
+      },
+      {
+        "platform": "Open Collective",
+        "url": "https://opencollective.com/valentiscut",
+        "description": "Transparent funding for the community"
+      },
+      {
+        "platform": "Patreon",
+        "url": "https://www.patreon.com/valentiscut",
+        "description": "Get exclusive Pro features"
+      }
+    ],
+    "plans": [
+      {
+        "name": "Supporter",
+        "amount": 5,
+        "currency": "USD",
+        "frequency": "monthly",
+        "description": "Support ongoing development"
+      },
+      {
+        "name": "Pro Sponsor",
+        "amount": 25,
+        "currency": "USD",
+        "frequency": "monthly",
+        "description": "Pro features + early access"
+      },
+      {
+        "name": "Enterprise Sponsor",
+        "amount": 100,
+        "currency": "USD",
+        "frequency": "monthly",
+        "description": "Enterprise support + custom features"
+      }
+    ],
+    "history": [
+      {
+        "year": 2026,
+        "income": 50000,
+        "expenses": 45000,
+        "description": "Infrastructure and development costs",
+        "url": "https://valentis.cut/transparency/2026"
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+# VALENTIS Cut - Netlify Redirects
+
+# Redirect default Netlify subdomain to primary domain
+https://valentis-cut.netlify.com/* https://valentis.cut/:splat 301!
+https://valentis-cut.netlify.app/* https://valentis.cut/:splat 301!
+
+# WWW to non-WWW
+https://www.valentis.cut/* https://valentis.cut/:splat 301!
+
+# HTTP to HTTPS
+http://valentis.cut/* https://valentis.cut/:splat 301!
+http://www.valentis.cut/* https://valentis.cut/:splat 301!
+
+# Legacy redirects
+/old-editor/* / 301
+/editor/v1/* / 301
+/editor/v2/* / 301
+
+# API redirects
+/api/* /.netlify/functions/api/:splat 200
+
+# Admin panel protection
+/admin/*  /admin/index.html  200
+
+# SPA fallback
+/*    /index.html   200
+
+# Custom error pages
+/error/404  /404.html  200
+/error/500  /500.html  200
+
+# Security headers applied to all routes
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; media-src 'self' blob:; connect-src 'self' https: wss:; worker-src 'self' blob:;

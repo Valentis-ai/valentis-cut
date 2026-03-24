@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "contact_email": "ads@valentis.cut",
+  "contact_address": "VALENTIS Cut, Digital Media Division",
+  "identifiers": [
+    {
+      "name": "VALENTIS Cut",
+      "domain": "valentis.cut",
+      "seller_type": "PUBLISHER"
+    }
+  ],
+  "sellers": [
+    {
+      "seller_id": "pub-1234567890123456",
+      "seller_type": "PUBLISHER",
+      "name": "VALENTIS Cut - Video Editor Platform",
+      "domain": "valentis.cut",
+      "is_confidential": 0
+    },
+    {
+      "seller_id": "pub-9876543210987654",
+      "seller_type": "INTERMEDIARY",
+      "name": "VALENTIS Cut - Ad Network",
+      "domain": "valentis.cut",
+      "is_confidential": 0
+    }
+  ]
+}

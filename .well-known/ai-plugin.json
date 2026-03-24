@@ -1,0 +1,24 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "VALENTIS Cut",
+  "name_for_model": "valentis_cut",
+  "description_for_human": "Edit videos with AI-powered tools directly in your browser. Cut, trim, add effects, and export professional videos.",
+  "description_for_model": "VALENTIS Cut is a professional browser-based video editor with AI features including auto-cut, captions, background removal, and beat sync. Help users edit videos, apply effects, and export in various formats.",
+  "auth": {
+    "type": "oauth",
+    "client_url": "https://valentis.cut/auth/oauth",
+    "scope": "video:edit project:read user:read",
+    "authorization_url": "https://valentis.cut/auth/token",
+    "authorization_content_type": "application/json",
+    "verification_tokens": {
+      "openai": "your_token_here"
+    }
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://valentis.cut/api/openapi.json"
+  },
+  "logo_url": "https://valentis.cut/icons/icon-512x512.png",
+  "contact_email": "api@valentis.cut",
+  "legal_info_url": "https://valentis.cut/legal"
+}

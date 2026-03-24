@@ -1,0 +1,52 @@
+# VALENTIS Cut - Netlify Headers
+
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(self), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(self), midi=(), payment=(), picture-in-picture=(self), sync-xhr=(), usb=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+# Service Worker
+/sw.js
+  Cache-Control: no-cache
+  Service-Worker-Allowed: /
+
+# Manifest
+/manifest.json
+  Content-Type: application/manifest+json
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Security files
+/.well-known/*
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+# Static assets - aggressive caching
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/icons/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Video processing chunks
+/chunks/*
+  Cache-Control: public, max-age=86400
+
+# API responses
+/api/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# WASM files
+*.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=31536000, immutable
+
+# Worker files
+*.worker.js
+  Cache-Control: no-cache

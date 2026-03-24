@@ -1,0 +1,41 @@
+# VALENTIS Cut - App-ads.txt
+# Mobile Application Authorized Digital Sellers
+
+# Google AdMob
+google.com, pub-1234567890123456, DIRECT, f08c47fec0942fa0
+google.com, pub-9876543210987654, RESELLER, f08c47fec0942fa0
+
+# Meta Audience Network
+facebook.com, 123456789012345, RESELLER, c3e20eee3f780d68
+
+# Unity Ads
+unity3d.com, 1234567, DIRECT, 96cabb5f342d5e48
+
+# ironSource
+ironsrc.com, 123456, DIRECT, 79929e88b2ba73bc
+
+# AppLovin
+applovin.com, 123456789abcdef123456789abcdef123, DIRECT, 5adde53a4f7ae0f3
+
+# AdColony
+adcolony.com, 1234567890abcdef, RESELLER, 1ad675c9de6b5176
+
+# Chartboost
+chartboost.com, 1234567890abcdef, DIRECT
+
+# Vungle
+vungle.com, 1234567890abcdef, DIRECT, c107d686becd2d77
+
+# Mintegral
+mintegral.com, 12345, DIRECT, 0aeed750c80d6423
+
+# Pangle (ByteDance)
+pangleglobal.com, 123456, DIRECT
+
+# InMobi
+inmobi.com, 1234567890123456789, RESELLER, 83e75a7ae333ca9d
+
+# AdMob Mediation Partners
+# (Add your mediation partners here)
+
+# Contact: mobile-ads@valentis.cut

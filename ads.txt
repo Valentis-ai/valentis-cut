@@ -1,0 +1,49 @@
+# VALENTIS Cut - Ads.txt
+# Authorized Digital Sellers
+
+# Google AdSense
+google.com, pub-1234567890123456, DIRECT, f08c47fec0942fa0
+
+# Google Ad Manager
+google.com, pub-9876543210987654, RESELLER, f08c47fec0942fa0
+
+# AppNexus / Xandr
+appnexus.com, 1234, DIRECT, f5ab79cb980f11d1
+
+# OpenX
+openx.com, 123456789, DIRECT, 6a698e2ec38604c6
+
+# Rubicon Project / Magnite
+rubiconproject.com, 123456, DIRECT, 0bfd66d529a55807
+
+# Index Exchange
+indexexchange.com, 123456, DIRECT, 50b1c356f2c5c8fc
+
+# PubMatic
+pubmatic.com, 123456, DIRECT, 5d62403b186f2ace
+
+# Sovrn
+sovrn.com, 123456, DIRECT, fafdf38b16bf6b2b
+
+# TripleLift
+triplelift.com, 123456, DIRECT, 6c33edb11117eefc
+
+# Video Ad Partners
+# Google Ad Manager for Video
+google.com, pub-1234567890123456, DIRECT, f08c47fec0942fa0
+
+# SpotX
+spotx.tv, 123456, RESELLER, 7842df1d2fe2db34
+spotxchange.com, 123456, RESELLER, 7842df1d2fe2db34
+
+# Telaria / Tremor Video
+tremorhub.com, 123456, RESELLER, 1a4e959a1b50034a
+
+# FreeWheel
+freewheel.tv, 123456, RESELLER
+
+# SpringServe
+springserve.com, 123456, RESELLER, a24eb641fc82e93d
+
+# Contact for ad inquiries
+# ads@valentis.cut

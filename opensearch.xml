@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>VALENTIS Cut</ShortName>
+  <Description>Search VALENTIS Cut tutorials and templates</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <OutputEncoding>UTF-8</OutputEncoding>
+  <AdultContent>false</AdultContent>
+  <Language>en-us</Language>
+  <Language>fa-ir</Language>
+  <Developer>VALENTIS Team</Developer>
+  <Contact>support@valentis.cut</Contact>
+  <Tags>video editor ai editing valentis cut</Tags>
+  <Attribution>Search data copyright 2026, VALENTIS Cut</Attribution>
+  <SyndicationRight>open</SyndicationRight>
+  
+  <Image height="16" width="16" type="image/x-icon">https://valentis.cut/favicon.ico</Image>
+  <Image height="64" width="64" type="image/png">https://valentis.cut/icons/icon-64x64.png</Image>
+  
+  <Url type="text/html" method="get" template="https://valentis.cut/search?q={searchTerms}"/>
+  <Url type="application/x-suggestions+json" method="get" template="https://valentis.cut/api/search/suggestions?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://valentis.cut/opensearch.xml"/>
+  
+  <Query role="example" searchTerms="auto cut tutorial"/>
+  <Query role="example" searchTerms="export 4k video"/>
+  <Query role="example" searchTerms="AI captions"/>
+</OpenSearchDescription>

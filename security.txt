@@ -1,0 +1,35 @@
+# VALENTIS Cut - Security Information
+# https://securitytxt.org/
+
+# Contact
+Contact: mailto:security@valentis.cut
+Contact: https://valentis.cut/security/report
+Contact: https://hackerone.com/valentiscut
+
+# Encryption
+Encryption: https://valentis.cut/pgp-key.txt
+Encryption: https://keybase.io/valentiscut
+
+# Acknowledgments
+Acknowledgments: https://valentis.cut/security/hall-of-fame
+Acknowledgments: https://valentis.cut/security/researchers
+
+# Policy
+Policy: https://valentis.cut/security/policy
+Policy: https://valentis.cut/security/vulnerability-disclosure
+
+# Hiring
+Hiring: https://valentis.cut/careers/security-engineer
+
+# Preferred-Languages
+Preferred-Languages: en, fa
+
+# Expires
+Expires: 2027-03-25T00:00:00.000Z
+
+# Canonical
+Canonical: https://valentis.cut/.well-known/security.txt
+Canonical: https://www.valentis.cut/.well-known/security.txt
+
+# CSAF
+CSAF: https://valentis.cut/.well-known/csaf/provider-metadata.json
